@@ -36,6 +36,14 @@
 
 <div class="container">
     <div class="card">
+        <ul>
+            <li style="display: inline" th:each="onetest,iterStat : ${test}">
+                <strong th:text="${onetest}">Test Array</strong>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card">
         <strong th:text="${category.name}">Category Title</strong>
     </div>
 
