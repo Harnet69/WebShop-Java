@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <!doctype html>
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
     <meta name="author" content="Codecool" />
@@ -28,27 +28,25 @@
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 
-<body>
-
+<body id="body">
 <div class="jumbotron text-center">
     <h1>Codecool Shop</h1>
 </div>
 
 <div class="container">
-    <div class="card">
-        <ul>
-            <li style="display: inline" th:each="onetest,iterStat : ${test}">
-                <strong th:text="${onetest}">Test Array</strong>
-            </li>
-        </ul>
-    </div>
 
     <div class="card">
         <strong th:text="${category.name}">Category Title</strong>
+        <form action="/">
+            <select name="category" id="category" style="width: 100px" onchange="mySubmit(this.form)">
+                <option value="tablet">Tablet</option>
+                <option value="phone">Phone</option>
+            </select>
+        </form>
     </div>
 
     <div id="products" class="row">
-        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">
+        <div id="card" class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">
             <div class="card">
                 <img class="" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" />
                 <div class="card-header">
@@ -72,4 +70,17 @@
 <div th:replace="footer.html :: copy"></div>
 
 </body>
+<script>
+    function mySubmit(theForm) {
+        console.log("Buum");
+        $.ajax({ // create an AJAX call...
+            data: $(theForm).serialize(), // get the form data
+            type: $(theForm).attr('method'), // GET or POST
+            url: $(theForm).attr('action'), // the file to call
+            success: function (response) { // on success..
+                $('#products').html(response); // update the DIV
+            }
+        });
+    }
+</script>
 </html>

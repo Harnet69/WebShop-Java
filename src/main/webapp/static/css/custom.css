@@ -1,3 +1,4 @@
+
 .glyphicon {
     margin-right:5px;
 }
@@ -59,4 +60,7 @@
 .list-group-item-text
 {
     margin: 0 0 11px;
+}
+.card-body{
+    text-align: center;
 }

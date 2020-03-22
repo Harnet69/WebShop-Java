@@ -26,22 +26,32 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        List<String> testArray = new ArrayList<String>();
-        testArray.add("Sony");
-        testArray.add("Sanio");
-        testArray.add("Shivaki");
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("test", testArray);
-        context.setVariable("category", productCategoryDataStore.find(1));
-        context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
+
+        if(req.getParameter("category") == null){
+            context.setVariable("category", productCategoryDataStore.find(1));
+            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
+            engine.process("product/index.html", context, resp.getWriter());
+        }
+        else if(req.getParameter("category") != null && req.getParameter("category").equals("tablet")){
+            context.setVariable("category", productCategoryDataStore.find(1));
+            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if(req.getParameter("category") != null && req.getParameter("category").equals("phone")){
+            context.setVariable("category", productCategoryDataStore.find(2));
+            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(2)));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+
         // // Alternative setting of the template context
         // Map<String, Object> params = new HashMap<>();
         // params.put("category", productCategoryDataStore.find(1));
         // params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
         // context.setVariables(params);
-        engine.process("product/index.html", context, resp.getWriter());
+//        engine.process("product/index.html", context, resp.getWriter());
     }
 
 }
