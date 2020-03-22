@@ -32,12 +32,17 @@ public class ProductController extends HttpServlet {
 
         if(req.getParameter("category") == null){
             context.setVariable("category", productCategoryDataStore.find(1));
-            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
+            context.setVariable("products", productDataStore.getAll());
             engine.process("product/index.html", context, resp.getWriter());
         }
         else if(req.getParameter("category").equals("tablet")){
             context.setVariable("category", productCategoryDataStore.find(1));
             context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if(req.getParameter("category").equals("all")){
+            context.setVariable("category", productCategoryDataStore.find(1));
+            context.setVariable("products", productDataStore.getAll());
             engine.process("product/products.html", context, resp.getWriter());
         }
         else if(req.getParameter("category").equals("phone")){
