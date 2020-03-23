@@ -60,7 +60,7 @@ public class ProductDaoMem implements ProductDao {
     }
 
     @Override
-    public List<Product> findBySupplier(String supplierName) {
+    public List<Product> getBySupplier(String supplierName) {
         return (data.stream().filter(t -> t.getSupplier().getName().equals(supplierName)).collect(Collectors.toList()));
     }
 
