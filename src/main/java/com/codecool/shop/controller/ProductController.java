@@ -31,7 +31,8 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         CategoryController category = new CategoryController(productDataStore, productCategoryDataStore, engine,
                 context, req, resp);
-
+//        System.out.println(req.getParameter("category"));
+//        System.out.println(req.getParameter("supplier"));
         category.showProductsByGivingCat();
 
         // // Alternative setting of the template context

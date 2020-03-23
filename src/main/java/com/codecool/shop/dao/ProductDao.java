@@ -12,8 +12,10 @@ public interface ProductDao {
     Product find(int id);
     void remove(int id);
 
+
     List<Product> getAll();
     List<Product> getBy(Supplier supplier);
+    List<Product> findBySupplier(String supplierName);
     List<Product> getBy(ProductCategory productCategory);
 
 }

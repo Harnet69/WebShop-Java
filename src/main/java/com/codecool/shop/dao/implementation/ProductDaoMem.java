@@ -38,6 +38,12 @@ public class ProductDaoMem implements ProductDao {
         return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
+
+
+//    public List<Product> findBySupplier(String supplier) {
+//        return (List<Product>) data.stream().filter(t -> t.getSupplier().getName().equals(supplier)).findFirst().orElse(null);
+//    }
+
     @Override
     public void remove(int id) {
         data.remove(find(id));
@@ -51,6 +57,11 @@ public class ProductDaoMem implements ProductDao {
     @Override
     public List<Product> getBy(Supplier supplier) {
         return data.stream().filter(t -> t.getSupplier().equals(supplier)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> findBySupplier(String supplierName) {
+        return (data.stream().filter(t -> t.getSupplier().getName().equals(supplierName)).collect(Collectors.toList()));
     }
 
     @Override

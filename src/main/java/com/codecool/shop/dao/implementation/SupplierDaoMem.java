@@ -43,4 +43,8 @@ public class SupplierDaoMem implements SupplierDao {
     public List<Supplier> getAll() {
         return data;
     }
+
+    public Supplier getSupplierByName(String supplierName){
+        return data.stream().filter(t -> t.getName().equals(supplierName)).findFirst().orElse(null);
+    }
 }
