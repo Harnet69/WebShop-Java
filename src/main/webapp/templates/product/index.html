@@ -40,9 +40,15 @@
 <!--                    <strong th:text="${category.name}">Category Title</strong>-->
                     <form action="/">
                         <select name="category" id="category" style="width: 100px" onchange="mySubmit(this.form)">
-                            <option value="all" selected>All</option>
+                            <option value="all_devices" selected>All devices</option>
                             <option value="tablet">Tablet</option>
                             <option value="phone">Phone</option>
+                        </select>
+                        <select name="supplier" id="supplier" style="width: 100px" onchange="mySubmit(this.form)">
+                            <option value="all" selected>All brands</option>
+                            <option value="amazon">Amazon</option>
+                            <option value="lenovo">Lenovo</option>
+                            <option value="apple">Apple</option>
                         </select>
                     </form>
                 </div>

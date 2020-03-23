@@ -29,26 +29,10 @@ public class ProductController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        CategoryController category = new CategoryController(productDataStore, productCategoryDataStore, engine,
+                context, req, resp);
 
-        if (req.getParameter("category") == null) {
-            context.setVariable("products", productDataStore.getAll());
-            engine.process("product/index.html", context, resp.getWriter());}
-        else {
-            switch (req.getParameter("category")) {
-                case "tablet":
-                    context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-                    engine.process("product/products.html", context, resp.getWriter());
-                    break;
-                case "phone":
-                    context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(2)));
-                    engine.process("product/products.html", context, resp.getWriter());
-                    break;
-                case "all":
-                    context.setVariable("products", productDataStore.getAll());
-                    engine.process("product/products.html", context, resp.getWriter());
-                    break;
-            }
-        }
+        category.showProductsByGivingCat();
 
         // // Alternative setting of the template context
         // Map<String, Object> params = new HashMap<>();
