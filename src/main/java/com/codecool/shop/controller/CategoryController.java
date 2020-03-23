@@ -29,6 +29,7 @@ public class CategoryController {
 
     public void showProductsByGivingCat() throws IOException {
 
+            System.out.println(productDataStore.getByCategorySupplier(req.getParameter("category") ,req.getParameter("supplier")));
         if (req.getParameter("category") == null && req.getParameter("supplier") == null) {
             context.setVariable("products", productDataStore.getAll());
             engine.process("product/index.html", context, resp.getWriter());
@@ -38,11 +39,11 @@ public class CategoryController {
                 engine.process("product/products.html", context, resp.getWriter());
             } else {
                 switch (req.getParameter("category")) {
-                    case "tablet":
+                    case "Tablet":
                         context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
                         engine.process("product/products.html", context, resp.getWriter());
                         break;
-                    case "phone":
+                    case "Phone":
                         context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(2)));
                         engine.process("product/products.html", context, resp.getWriter());
                         break;

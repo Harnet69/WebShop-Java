@@ -17,6 +17,11 @@ public class ProductCategory extends BaseModel {
         return department;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     public void setDepartment(String department) {
         this.department = department;
     }
