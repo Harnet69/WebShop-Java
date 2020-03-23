@@ -28,31 +28,46 @@ public class CategoryController {
     }
 
     public void showProductsByGivingCat() throws IOException {
-
-            System.out.println(productDataStore.getByCategorySupplier(req.getParameter("category") ,req.getParameter("supplier")));
         if (req.getParameter("category") == null && req.getParameter("supplier") == null) {
             context.setVariable("products", productDataStore.getAll());
             engine.process("product/index.html", context, resp.getWriter());
-        } else {
-            if (req.getParameter("supplier") != null && !req.getParameter("supplier").equals("all_brands")) {
-                context.setVariable("products", productDataStore.getBySupplier(req.getParameter("supplier")));
-                engine.process("product/products.html", context, resp.getWriter());
-            } else {
-                switch (req.getParameter("category")) {
-                    case "Tablet":
-                        context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-                        engine.process("product/products.html", context, resp.getWriter());
-                        break;
-                    case "Phone":
-                        context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(2)));
-                        engine.process("product/products.html", context, resp.getWriter());
-                        break;
-                    case "all_devices":
-                        context.setVariable("products", productDataStore.getAll());
-                        engine.process("product/products.html", context, resp.getWriter());
-                        break;
-                }
-            }
         }
+        else if(req.getParameter("category").equals("all") && !req.getParameter("supplier").equals("all")){
+            context.setVariable("products", productDataStore.getBySupplier(req.getParameter("supplier")));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if(!req.getParameter("category").equals("all") && req.getParameter("supplier").equals("all")){
+            context.setVariable("products", productDataStore.getByCategory(req.getParameter("category")));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if (req.getParameter("category").equals("all") && req.getParameter("supplier").equals("all")) {
+            context.setVariable("products", productDataStore.getAll());
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if(req.getParameter("category") != null && req.getParameter("supplier") != null){
+            context.setVariable("products", productDataStore.getByCategorySupplier(req.getParameter("category") ,req.getParameter("supplier")));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+//        else {
+//            if (req.getParameter("supplier") != null && !req.getParameter("supplier").equals("all_brands")) {
+//                context.setVariable("products", productDataStore.getBySupplier(req.getParameter("supplier")));
+//                engine.process("product/products.html", context, resp.getWriter());
+//            } else {
+//                switch (req.getParameter("category")) {
+//                    case "Tablet":
+//                        context.setVariable("products", productDataStore.getByCategory(req.getParameter("category")));
+//                        engine.process("product/products.html", context, resp.getWriter());
+//                        break;
+//                    case "Phone":
+//                        context.setVariable("products", productDataStore.getByCategory(req.getParameter("category")));
+//                        engine.process("product/products.html", context, resp.getWriter());
+//                        break;
+//                    case "all_devices":
+//                        context.setVariable("products", productDataStore.getAll());
+//                        engine.process("product/products.html", context, resp.getWriter());
+//                        break;
+//                }
+//            }
+//        }
     }
 }
