@@ -29,11 +29,27 @@ public class ProductController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        CategoryController category = new CategoryController(productDataStore, productCategoryDataStore, engine,
-                context, req, resp);
-//        System.out.println(req.getParameter("category"));
-//        System.out.println(req.getParameter("supplier"));
-        category.showProductsByGivingCat();
+
+        if (req.getParameter("category") == null && req.getParameter("supplier") == null) {
+            context.setVariable("products", productDataStore.getAll());
+            engine.process("product/index.html", context, resp.getWriter());
+        }
+        else if(req.getParameter("category").equals("all") && !req.getParameter("supplier").equals("all")){
+            context.setVariable("products", productDataStore.getBySupplier(req.getParameter("supplier")));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if(!req.getParameter("category").equals("all") && req.getParameter("supplier").equals("all")){
+            context.setVariable("products", productDataStore.getByCategory(req.getParameter("category")));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if (req.getParameter("category").equals("all") && req.getParameter("supplier").equals("all")) {
+            context.setVariable("products", productDataStore.getAll());
+            engine.process("product/products.html", context, resp.getWriter());
+        }
+        else if(req.getParameter("category") != null && req.getParameter("supplier") != null){
+            context.setVariable("products", productDataStore.getByCategorySupplier(req.getParameter("category") ,req.getParameter("supplier")));
+            engine.process("product/products.html", context, resp.getWriter());
+        }
 
         // // Alternative setting of the template context
         // Map<String, Object> params = new HashMap<>();
