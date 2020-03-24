@@ -48,26 +48,5 @@ public class CategoryController {
             context.setVariable("products", productDataStore.getByCategorySupplier(req.getParameter("category") ,req.getParameter("supplier")));
             engine.process("product/products.html", context, resp.getWriter());
         }
-//        else {
-//            if (req.getParameter("supplier") != null && !req.getParameter("supplier").equals("all_brands")) {
-//                context.setVariable("products", productDataStore.getBySupplier(req.getParameter("supplier")));
-//                engine.process("product/products.html", context, resp.getWriter());
-//            } else {
-//                switch (req.getParameter("category")) {
-//                    case "Tablet":
-//                        context.setVariable("products", productDataStore.getByCategory(req.getParameter("category")));
-//                        engine.process("product/products.html", context, resp.getWriter());
-//                        break;
-//                    case "Phone":
-//                        context.setVariable("products", productDataStore.getByCategory(req.getParameter("category")));
-//                        engine.process("product/products.html", context, resp.getWriter());
-//                        break;
-//                    case "all_devices":
-//                        context.setVariable("products", productDataStore.getAll());
-//                        engine.process("product/products.html", context, resp.getWriter());
-//                        break;
-//                }
-//            }
-//        }
     }
 }

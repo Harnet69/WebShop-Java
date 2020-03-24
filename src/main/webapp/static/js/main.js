@@ -5,6 +5,7 @@ function mySubmit(theForm) {
         url: $(theForm).attr('action'), // the file to call
         success: function (response) { // on success..
             $('#products').html(response); // update the DIV
+            console.log(response);
         }
     });
 }
