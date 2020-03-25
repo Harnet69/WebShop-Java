@@ -1,4 +1,5 @@
 let productsInCart = new Map();
+let prodInCartSimple = new Array();
 // dict.set(foo, "Foo");
 // dict.set(bar, "Bar");
 function mySubmit(theForm) {
@@ -17,8 +18,9 @@ function goToCart() {
     if(cartBtn != null) {
         cartBtn.addEventListener("click", function () {
             console.log("go to cart");
-            console.log(mapToString());
-            let s = serialize(productsInCart);
+            // console.log(prodInCartSimple);
+            // let s = serialize(productsInCart); // work with Map
+            let s = prodInCartSimple.toString();  // work with Array
             // console.log(s);
             $.ajax({ // create an AJAX call...
                 data: {"data" : s}, // get the form data
@@ -79,6 +81,7 @@ function addProductsToCart(button) {
     }else{
         productsInCart.set(prodId, 1);
     }
+    prodInCartSimple.push(prodId);
     productCounterLabel.textContent = calcQuantityProdInCart();
     console.log(productsInCart);
 }
