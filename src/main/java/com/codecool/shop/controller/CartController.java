@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @WebServlet(urlPatterns = {"/cart"})
@@ -31,12 +33,15 @@ public class CartController extends HttpServlet {
 //            System.out.println(req.getParameter(String.valueOf(i)));
 //        }
         System.out.println("Data from server"+req.getParameter("data"));
+        List<String> dataCart = new ArrayList<>();
         if(req.getParameter("data") != null){
-          data = req.getParameter("data");
-            System.out.println(data);
+          dataCart.add(req.getParameter("data"));
+            System.out.println(dataCart);
+            context.setVariable("data", dataCart);
+        }else{
+            context.setVariable("data", ProductDaoMem.getInstance().getAll());
         }
 
-        context.setVariable("name", req.getParameter(data));
-        engine.process("product/cart.html", context, resp.getWriter());
+        engine.process("product/cart-preview.html", context, resp.getWriter());
     }
 }
