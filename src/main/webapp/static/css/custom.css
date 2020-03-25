@@ -12,11 +12,11 @@
     z-index: 10;
     /*text-align: right;*/
     /*float: right;*/
-    width: 30%;
+    width: 50%;
     min-height: 300px;
     border: 2px solid blue;
     /*background-color: aliceblue;*/
-    background-color: rgba(126, 237, 252, 0.64);
+    background-color: rgba(126, 237, 252, 0.8);
 }
 
 .headerlogo h1 {
@@ -33,6 +33,18 @@
     font-size: large;
     font-weight: bold;
 }
+
+.cart-preview-table{
+    width: 95%;
+    margin: 0 auto;
+    border: 2px solid blue;
+    border-collapse: collapse;
+}
+.cart-preview-table tr, td, th{
+    border: 1px solid blue;
+    border-collapse: collapse;
+}
+
 
 .glyphicon {
     margin-right:5px;

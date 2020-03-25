@@ -2,8 +2,24 @@
 
 <div class="container">
 
-    There is a cart!!!
-    <strong th:text="${data}">Category Title</strong>
-<!--    <div th:text="${data}"></div>-->
-
+    <h3>Shopping cart</h3>
+    <table class="cart-preview-table" >
+        <tr>
+            <th>Model</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        <th:block th:each="smokeTest : ${data}">
+            <tr>
+                <td th:text="${smokeTest.name}">Product name</td>
+                <td><img style="height: 50px" src="http://placehold.it/400x250/000/fff" th:attr="src='static/img/product_' + ${smokeTest.id} + '.jpg'" alt="" /></td>
+                <td th:text="${smokeTest.description}">Description</td>
+                <td th:text="${smokeTest.price}">Price</td>
+                <td><label><input style="width: 30px" type="number" placeholder="1"></label></td>
+            </tr>
+        </th:block>
+    </table>
+    <span>Amount:</span>
 </div>
