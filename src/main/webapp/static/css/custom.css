@@ -13,8 +13,9 @@
     /*text-align: right;*/
     /*float: right;*/
     width: 30%;
-    height: 300px;
-    border: 1px solid blue;
+    min-height: 300px;
+    border: 2px solid blue;
+    /*background-color: aliceblue;*/
     background-color: rgba(126, 237, 252, 0.64);
 }
 

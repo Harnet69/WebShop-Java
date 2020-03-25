@@ -28,6 +28,9 @@ function goToCart() {
                 url: "cart", // the file to call
                 success: function (response) { // on success..
                     body = document.getElementsByClassName("headerlogo")[0];
+                    if(document.getElementById('cartPreview')){
+                        document.getElementById('cartPreview').remove();
+                    }
                     cartDiv = document.createElement("div");
                     cartDiv.className = "cartPreview";
                     cartDiv.setAttribute('id',"cartPreview");
