@@ -19,6 +19,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @WebServlet(urlPatterns = {"/cart"})
@@ -30,9 +31,16 @@ public class CartController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         List<Product> prodInCart = new ArrayList<>();
+
         String[] ary = req.getParameter("data").split(",");
         for(String id : ary){
-            prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+            long prodQtt = Arrays.stream(ary)
+                    .filter(x -> x.equals(id))
+                    .count();
+            productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+            if(!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))){
+                prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+            }
         }
 //        System.out.println("The cart was requested");
 //        System.out.println(req.getParameter("qttOfProdTypes"));
@@ -41,7 +49,6 @@ public class CartController extends HttpServlet {
 //            System.out.println(req.getParameter(String.valueOf(i)));
 //        }
 //        System.out.println("Data from server"+req.getParameter("data"));
-
         context.setVariable("data", prodInCart);
         engine.process("product/cart-preview.html", context, resp.getWriter());
     }
