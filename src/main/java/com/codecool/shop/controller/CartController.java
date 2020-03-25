@@ -19,6 +19,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -31,8 +33,13 @@ public class CartController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         List<Product> prodInCart = new ArrayList<>();
+        List<Product> prodInCartForAmount = new ArrayList<>();
 
         String[] ary = req.getParameter("data").split(",");
+        for(String id : ary) {
+            prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
+        }
+
         for(String id : ary){
             long prodQtt = Arrays.stream(ary)
                     .filter(x -> x.equals(id))
@@ -42,6 +49,11 @@ public class CartController extends HttpServlet {
                 prodInCart.add(productDataStore.find(Integer.parseInt(id)));
             }
         }
+        List<String> amount = prodInCartForAmount.stream()
+                .map(Product::getPrice)
+                .collect(Collectors.toList());
+        List<Double> sliced = amount.stream().map(x -> x.substring(0, x.length()- 4)).map(Double::valueOf).collect(Collectors.toList());
+        double amoutOfCart = sliced.stream().mapToDouble(x -> x).sum();
 //        System.out.println("The cart was requested");
 //        System.out.println(req.getParameter("qttOfProdTypes"));
 //        int qttOfProdTypes = Integer.parseInt(req.getParameter("qttOfProdTypes"));
@@ -50,6 +62,7 @@ public class CartController extends HttpServlet {
 //        }
 //        System.out.println("Data from server"+req.getParameter("data"));
         context.setVariable("data", prodInCart);
+        context.setVariable("amount", amoutOfCart);
         engine.process("product/cart-preview.html", context, resp.getWriter());
     }
 }
