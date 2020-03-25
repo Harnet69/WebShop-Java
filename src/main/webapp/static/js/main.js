@@ -16,8 +16,7 @@ function mySubmit(theForm) {
 function goToCart() {
     cartBtn = document.getElementById('headerlogoimg');
     if(cartBtn != null) {
-        cartBtn.addEventListener("click", function () {
-            console.log("go to cart");
+        cartBtn.addEventListener("mouseover", function () {
             // console.log(prodInCartSimple);
             // let s = serialize(productsInCart); // work with Map
             let s = prodInCartSimple.toString();  // work with Array
@@ -41,6 +40,9 @@ function goToCart() {
                 }
             });
             // window.location = "cart"+mapToString();
+        });
+        cartBtn.addEventListener("mouseleave", function () {
+            document.getElementById('cartPreview').remove();
         })
     }
 }
