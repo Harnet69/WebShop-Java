@@ -7,7 +7,7 @@
 }
 .cartPreview{
     position:absolute;
-    right: 5px;
+    right: 0;
     top  : 180px;
     z-index: 10;
     /*text-align: right;*/

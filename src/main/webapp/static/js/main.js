@@ -25,13 +25,13 @@ function goToCart() {
                 type: "GET", // GET or POST
                 url: "cart", // the file to call
                 success: function (response) { // on success..
-                    // $('#products').html(response); // update the DIV
-                    // h1 = document.getElementsByTagName("h1")[0];
                     body = document.getElementsByClassName("headerlogo")[0];
                     cartDiv = document.createElement("div");
                     cartDiv.className = "cartPreview";
-                    cartDiv.textContent = "Products in Cart";
+                    cartDiv.setAttribute('id',"cartPreview");
+                    // cartDiv.textContent = "Products in Cart";
                     body.appendChild(cartDiv);
+                    $('#cartPreview').html(response); // update the DIV
                     // console.log("Success"); // update the DIV
                 }
             });
