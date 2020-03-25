@@ -25,12 +25,12 @@ public class CartController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         String data = "";
 //        System.out.println("The cart was requested");
-        System.out.println(req.getParameter("qttOfProdTypes"));
+//        System.out.println(req.getParameter("qttOfProdTypes"));
 //        int qttOfProdTypes = Integer.parseInt(req.getParameter("qttOfProdTypes"));
 //        for(int i = 1; i<=qttOfProdTypes; i++){
 //            System.out.println(req.getParameter(String.valueOf(i)));
 //        }
-        System.out.println(req.getParameter("data"));
+        System.out.println("Data from server"+req.getParameter("data"));
         if(req.getParameter("data") != null){
           data = req.getParameter("data");
             System.out.println(data);

@@ -5,6 +5,18 @@
     width: 100px;
     height: 100px;
 }
+.cartPreview{
+    position:absolute;
+    right: 5px;
+    top  : 180px;
+    z-index: 10;
+    /*text-align: right;*/
+    /*float: right;*/
+    width: 30%;
+    height: 300px;
+    border: 1px solid blue;
+    background-color: rgba(126, 237, 252, 0.64);
+}
 
 .headerlogo h1 {
     position: relative;

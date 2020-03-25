@@ -25,11 +25,17 @@ function goToCart() {
                 type: "GET", // GET or POST
                 url: "cart", // the file to call
                 success: function (response) { // on success..
-                    // window.location = "cart"+mapToString();
+                    // $('#products').html(response); // update the DIV
+                    // h1 = document.getElementsByTagName("h1")[0];
+                    body = document.getElementsByClassName("headerlogo")[0];
+                    cartDiv = document.createElement("div");
+                    cartDiv.className = "cartPreview";
+                    cartDiv.textContent = "Products in Cart";
+                    body.appendChild(cartDiv);
                     // console.log("Success"); // update the DIV
                 }
             });
-            window.location = "cart"+mapToString();
+            // window.location = "cart"+mapToString();
         })
     }
 }
