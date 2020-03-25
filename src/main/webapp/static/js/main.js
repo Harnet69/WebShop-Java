@@ -1,4 +1,4 @@
-var productsInCart = new Map();
+let productsInCart = new Map();
 // dict.set(foo, "Foo");
 // dict.set(bar, "Bar");
 function mySubmit(theForm) {
@@ -8,10 +8,53 @@ function mySubmit(theForm) {
         url: $(theForm).attr('action'), // the file to call
         success: function (response) { // on success..
             $('#products').html(response); // update the DIV
-            console.log(response);
         }
     });
 }
+
+function goToCart() {
+    cartBtn = document.getElementById('headerlogoimg');
+    if(cartBtn != null) {
+        cartBtn.addEventListener("click", function () {
+            console.log("go to cart");
+            console.log(mapToString());
+            let s = serialize(productsInCart);
+            // console.log(s);
+            $.ajax({ // create an AJAX call...
+                data: {"data" : s}, // get the form data
+                type: "GET", // GET or POST
+                url: "cart", // the file to call
+                success: function (response) { // on success..
+                    // window.location = "cart"+mapToString();
+                    // console.log("Success"); // update the DIV
+                }
+            });
+            window.location = "cart"+mapToString();
+        })
+    }
+}
+
+function serialize (map) {
+    return JSON.stringify([...map.entries()])
+}
+
+function mapToString() {
+    let stringOfProduct = '?';
+    stringOfProduct += "qttOfProdTypes="+productsInCart.size+"&";
+    for(let [key, value] of productsInCart){
+        stringOfProduct += key+"="+value+"&";
+    }
+    return stringOfProduct.substring(0, stringOfProduct.length - 1);
+
+}
+
+function changeCartURL(addProduct) {
+    let cart = document.getElementById("goToCart");
+    cart.textContent +=addProduct;
+
+}
+
+
 
 function addListenerToButton(){
     submitBtns = document.getElementsByClassName("submit");
@@ -25,7 +68,6 @@ function addListenerToButton(){
 
 function addProductsToCart(button) {
     let prodId = parseInt(button.getAttribute("data"));
-    console.log(calcQuantityProdInCart());
     if(productsInCart.has(prodId)){
         productsInCart.set(prodId, productsInCart.get(prodId)+ 1);
     }else{
@@ -42,5 +84,5 @@ function calcQuantityProdInCart() {
     }
     return qttInCart;
 }
-
+goToCart();
 addListenerToButton();

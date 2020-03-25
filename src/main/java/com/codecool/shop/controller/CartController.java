@@ -21,14 +21,22 @@ public class CartController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("The cart was requested");
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        String data = "";
+//        System.out.println("The cart was requested");
+        System.out.println(req.getParameter("qttOfProdTypes"));
+//        int qttOfProdTypes = Integer.parseInt(req.getParameter("qttOfProdTypes"));
+//        for(int i = 1; i<=qttOfProdTypes; i++){
+//            System.out.println(req.getParameter(String.valueOf(i)));
+//        }
+        System.out.println(req.getParameter("data"));
+        if(req.getParameter("data") != null){
+          data = req.getParameter("data");
+            System.out.println(data);
+        }
 
-        context.setVariable("products", productDataStore.getByCategorySupplier(req.getParameter("category") ,req.getParameter("supplier")));
+        context.setVariable("name", req.getParameter(data));
         engine.process("product/cart.html", context, resp.getWriter());
     }
 }
