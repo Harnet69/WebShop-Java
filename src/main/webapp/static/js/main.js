@@ -15,47 +15,59 @@ function mySubmit(theForm) {
 
 function goToCart() {
     cartBtn = document.getElementById('headerlogoimg');
-    if(cartBtn != null) {
-        cartBtn.addEventListener("mouseover", function () {
-            // console.log(prodInCartSimple);
+    if (cartBtn != null) {
+        cartBtn.addEventListener("mouseover", function cartListener () {
             // let s = serialize(productsInCart); // work with Map
-            let s = prodInCartSimple.toString();  // work with Array
-            // console.log(s);
-            $.ajax({ // create an AJAX call...
-                data: {"data" : s}, // get the form data
-                type: "GET", // GET or POST
-                url: "cart", // the file to call
-                success: function (response) { // on success..
-                    body = document.getElementsByClassName("headerlogo")[0];
-                    if(document.getElementById('cartPreview')){
-                        document.getElementById('cartPreview').remove();
-                    }
-                    cartDiv = document.createElement("div");
-                    cartDiv.className = "cartPreview";
-                    cartDiv.setAttribute('id',"cartPreview");
-                    // cartDiv.textContent = "Products in Cart";
-                    body.appendChild(cartDiv);
-                    $('#cartPreview').html(response); // update the DIV
-                    // console.log("Success"); // update the DIV
-                }
-            });
+            showCartPreview();
             // window.location = "cart"+mapToString();
         });
         cartBtn.addEventListener("mouseleave", function () {
-            document.getElementById('cartPreview').remove();
-        })
+            if (document.getElementById('cartPreview')) {
+                document.getElementById('cartPreview').remove();
+            }
+        });
+
+        cartBtn.addEventListener("click", function () {
+            // showCartPreview();
+            // document.getElementById('cartPreview').removeAttribute('id');
+            sessionStorage.SessionName = "CartData";
+            sessionStorage.setItem("CartData",prodInCartSimple.toString());
+            window.location.href = "cart";
+            // sessionStorage.getItem("CartData");
+
+        });
     }
 }
 
-function serialize (map) {
+function showCartPreview() {
+    let s = prodInCartSimple.toString();  // work with Array
+    $.ajax({ // create an AJAX call...
+        data: {"data": s}, // get the form data
+        type: "GET", // GET or POST
+        url: "cart-preview", // the file to call
+        success: function (response) { // on success..
+            body = document.getElementsByClassName("headerlogo")[0];
+            if (document.getElementById('cartPreview')) {
+                document.getElementById('cartPreview').remove();
+            }
+            let cartDiv = document.createElement("div");
+            cartDiv.className = "cartPreview";
+            cartDiv.setAttribute('id', "cartPreview");
+            body.appendChild(cartDiv);
+            $('#cartPreview').html(response); // update the DIV
+        }
+    });
+}
+
+function serialize(map) {
     return JSON.stringify([...map.entries()])
 }
 
 function mapToString() {
     let stringOfProduct = '?';
-    stringOfProduct += "qttOfProdTypes="+productsInCart.size+"&";
-    for(let [key, value] of productsInCart){
-        stringOfProduct += key+"="+value+"&";
+    stringOfProduct += "qttOfProdTypes=" + productsInCart.size + "&";
+    for (let [key, value] of productsInCart) {
+        stringOfProduct += key + "=" + value + "&";
     }
     return stringOfProduct.substring(0, stringOfProduct.length - 1);
 
@@ -63,16 +75,15 @@ function mapToString() {
 
 function changeCartURL(addProduct) {
     let cart = document.getElementById("goToCart");
-    cart.textContent +=addProduct;
+    cart.textContent += addProduct;
 
 }
 
 
-
-function addListenerToButton(){
+function addListenerToButton() {
     submitBtns = document.getElementsByClassName("submit");
     productCounterLabel = document.getElementsByClassName("quantity")[0];
-    for(let button of submitBtns){
+    for (let button of submitBtns) {
         button.addEventListener("click", function () {
             addProductsToCart(button);
         })
@@ -81,9 +92,9 @@ function addListenerToButton(){
 
 function addProductsToCart(button) {
     let prodId = parseInt(button.getAttribute("data"));
-    if(productsInCart.has(prodId)){
-        productsInCart.set(prodId, productsInCart.get(prodId)+ 1);
-    }else{
+    if (productsInCart.has(prodId)) {
+        productsInCart.set(prodId, productsInCart.get(prodId) + 1);
+    } else {
         productsInCart.set(prodId, 1);
     }
     prodInCartSimple.push(prodId);
@@ -93,10 +104,11 @@ function addProductsToCart(button) {
 
 function calcQuantityProdInCart() {
     let qttInCart = 0;
-    for(let [key, value] of productsInCart){
+    for (let [key, value] of productsInCart) {
         qttInCart += value;
     }
     return qttInCart;
 }
+
 goToCart();
 addListenerToButton();
