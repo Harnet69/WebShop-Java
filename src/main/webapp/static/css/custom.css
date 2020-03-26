@@ -5,6 +5,11 @@
     width: 100px;
     height: 100px;
 }
+
+#logo{
+    float: left;
+    margin-top: -50px;
+}
 .cartPreview{
     position:absolute;
     right: 0;
