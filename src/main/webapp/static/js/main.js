@@ -42,7 +42,7 @@ function goToCart() {
             if(prodInCartSimple.length > 0){
                 sessionStorage.SessionName = "CartData";
                 sessionStorage.setItem("CartData",prodInCartSimple.toString());
-                window.location.href = "cart";
+                window.location.href = "cart" + mapToString();
             }
             // sessionStorage.getItem("CartData");
 
@@ -75,12 +75,13 @@ function serialize(map) {
 }
 
 function mapToString() {
-    let stringOfProduct = '?';
-    stringOfProduct += "qttOfProdTypes=" + productsInCart.size + "&";
-    for (let [key, value] of productsInCart) {
-        stringOfProduct += key + "=" + value + "&";
-    }
-    return stringOfProduct.substring(0, stringOfProduct.length - 1);
+    // let stringOfProduct = '?';
+    // stringOfProduct += "qttOfProdTypes=" + prodInCartSimple.length + "&";
+    // for (let [key, value] of productsInCart) {
+    //     stringOfProduct += key + "=" + value + "&";
+    // }
+    // return stringOfProduct.substring(0, stringOfProduct.length - 1);
+    return "?data=" + prodInCartSimple.toString();
 
 }
 
