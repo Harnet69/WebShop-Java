@@ -1,7 +1,13 @@
 let productsInCart = new Map();
-let prodInCartSimple = new Array();
-// dict.set(foo, "Foo");
-// dict.set(bar, "Bar");
+let prodInCartSimple = [];
+if(sessionStorage.getItem("CartData")) {
+    prodsId = sessionStorage.getItem("CartData").split(',');
+    for(i=0; i< prodsId.length; i++){
+        prodInCartSimple.push(prodsId[i]);
+    }
+}
+document.getElementsByClassName("quantity")[0].textContent = prodInCartSimple.length;
+
 function mySubmit(theForm) {
     $.ajax({ // create an AJAX call...
         data: $(theForm).serialize(), // get the form data
@@ -41,6 +47,7 @@ function goToCart() {
 
 function showCartPreview() {
     let s = prodInCartSimple.toString();  // work with Array
+    console.log("It should be: " + prodInCartSimple);
     $.ajax({ // create an AJAX call...
         data: {"data": s}, // get the form data
         type: "GET", // GET or POST
