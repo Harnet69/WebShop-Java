@@ -14,7 +14,6 @@ class SupplierDaoMemTest {
     private static Supplier testSupplier = new Supplier("TestName", "TestDescription");
     private static Supplier testSupplierTwo = new Supplier("TestName2", "TestDescription2");
 
-
     private String expected = "id: 3, " +
             "name: TestName, " +
             "description: TestDescription";
