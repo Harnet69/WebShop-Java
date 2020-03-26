@@ -34,6 +34,7 @@
             <a href="/"><img id="logo" src="static/img/codecool-logo.png"></a><h1>Shopping cart</h1>
         </div>
         <div class="container">
+            <div style="text-align: right"><img id="cartDelete" src="/static/img/cartDeleteSm.jpg" alt="Delete the cart"></div>
             <table class="cart-preview-table" >
                 <tr>
                     <th>Model</th>
@@ -50,7 +51,7 @@
                         <td th:text="${smokeTest.description}">Description</td>
                         <td th:text="${smokeTest.price}">Price</td>
                         <td><label><input th:value="${smokeTest.quantity}" style="width: 30px; background-color: rgba(126, 237, 252, 0.8) " type="number" placeholder="1"></label></td>
-                        <td><img src="/static/img/cartDeleteSm.jpg"></td>
+                        <td><img src="/static/img/cartDeleteSm.jpg" alt="Delete the item"></td>
                     </tr>
                 </th:block>
             </table>

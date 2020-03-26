@@ -123,5 +123,19 @@ function calcQuantityProdInCart() {
     return qttInCart;
 }
 
+function cartDelete() {
+    if(document.getElementById("cartDelete")) {
+        let cartDelBtn = document.getElementById("cartDelete");
+        cartDelBtn.addEventListener("click", function () {
+            let answer = window.confirm("Delete the cart?");
+            if (answer) {
+                sessionStorage.removeItem("CartData");
+                window.location.href = "/"
+            }
+        })
+    }
+}
+
 goToCart();
 addListenerToButton();
+cartDelete();
