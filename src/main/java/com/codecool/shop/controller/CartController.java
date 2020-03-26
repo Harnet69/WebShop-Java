@@ -44,12 +44,6 @@ public class CartController extends HttpServlet {
                 prodInCart.add(productDataStore.find(Integer.parseInt(id)));
             }
         }
-        // calculate amount of the cart
-//        List<String> amount = prodInCartForAmount.stream()
-//                .map(Product::getPrice)
-//                .collect(Collectors.toList());
-//        List<Double> sliced = amount.stream().map(x -> x.substring(0, x.length()- 4)).map(Double::valueOf).collect(Collectors.toList());
-//        double amoutOfCart = sliced.stream().mapToDouble(x -> x).sum();
 
         context.setVariable("data", prodInCart);
         context.setVariable("amount", calcCartAmount(prodInCartForAmount));

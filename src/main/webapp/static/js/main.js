@@ -90,7 +90,6 @@ function mapToString() {
 function changeCartURL(addProduct) {
     let cart = document.getElementById("goToCart");
     cart.textContent += addProduct;
-
 }
 
 
@@ -145,6 +144,43 @@ function cartDelete() {
     }
 }
 
+function itemDeleteBtn() {
+    if(document.getElementsByClassName("delItmBtn")[0]) {
+        let delItemBtns = document.getElementsByClassName("delItmBtn");
+        for (let btn of delItemBtns) {
+            btn.style.cursor = "pointer";
+            btn.addEventListener("click", function () {
+                deleteItemFromQueryString(btn);
+            })
+        }
+    }
+}
+
+function deleteItemFromQueryString(btn) {
+    queryStringArr = sessionStorage.getItem("CartData").split(",");
+    newString = [];
+    prodIdForDel = btn.getAttribute("data");
+    // console.log(prodIdForDel);
+    for(let num of queryStringArr){
+        if(num !== prodIdForDel){
+            newString.push(parseInt(num));
+        }
+    }
+    sessionStorage.setItem("CartData",newString);
+    prodInCartSimple = newString;
+    if(prodInCartSimple.length > 0){
+        window.location.href = "cart" + mapToString();
+    }else{
+        window.location.href = "/";
+    }
+
+    // console.log("Delete! "+btn.getAttribute("data"));
+    // console.log(sessionStorage.getItem("CartData"));
+    // s = sessionStorage.getItem("CartData").replace(btn.getAttribute("data"), '');
+    // console.log(s);
+}
+
 goToCart();
 addListenerToButton();
 cartDelete();
+itemDeleteBtn();
