@@ -41,6 +41,7 @@
                     <th>Description</th>
                     <th>Price</th>
                     <th>Quantity</th>
+                    <th>Remove</th>
                 </tr>
                 <th:block th:each="smokeTest : ${data}">
                     <tr>
@@ -49,6 +50,7 @@
                         <td th:text="${smokeTest.description}">Description</td>
                         <td th:text="${smokeTest.price}">Price</td>
                         <td><label><input th:value="${smokeTest.quantity}" style="width: 30px; background-color: rgba(126, 237, 252, 0.8) " type="number" placeholder="1"></label></td>
+                        <td><img src="/static/img/cartDeleteSm.jpg"></td>
                     </tr>
                 </th:block>
             </table>
