@@ -1,10 +1,6 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -20,7 +16,7 @@ import java.io.IOException;
 public class CartController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         String data = "";
@@ -30,9 +26,10 @@ public class CartController extends HttpServlet {
 //        for(int i = 1; i<=qttOfProdTypes; i++){
 //            System.out.println(req.getParameter(String.valueOf(i)));
 //        }
-        System.out.println("Data from server"+req.getParameter("data"));
-        if(req.getParameter("data") != null){
-          data = req.getParameter("data");
+        String requestedDataParameter = req.getParameter("data");
+        System.out.println("Data from server" + requestedDataParameter);
+        if (requestedDataParameter != null) {
+            data = requestedDataParameter;
             System.out.println(data);
         }
 
