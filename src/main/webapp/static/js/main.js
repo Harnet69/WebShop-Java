@@ -6,8 +6,9 @@ if(sessionStorage.getItem("CartData")) {
         prodInCartSimple.push(prodsId[i]);
     }
 }
-document.getElementsByClassName("quantity")[0].textContent = prodInCartSimple.length;
-
+if(document.getElementsByClassName("quantity")[0]) {
+    document.getElementsByClassName("quantity")[0].textContent = prodInCartSimple.length;
+}
 function mySubmit(theForm) {
     $.ajax({ // create an AJAX call...
         data: $(theForm).serialize(), // get the form data
@@ -24,7 +25,9 @@ function goToCart() {
     if (cartBtn != null) {
         cartBtn.addEventListener("mouseover", function cartListener () {
             // let s = serialize(productsInCart); // work with Map
-            showCartPreview();
+            if(prodInCartSimple.length > 0){
+                showCartPreview();
+            }
             // window.location = "cart"+mapToString();
         });
         cartBtn.addEventListener("mouseleave", function () {
@@ -36,9 +39,11 @@ function goToCart() {
         cartBtn.addEventListener("click", function () {
             // showCartPreview();
             // document.getElementById('cartPreview').removeAttribute('id');
-            sessionStorage.SessionName = "CartData";
-            sessionStorage.setItem("CartData",prodInCartSimple.toString());
-            window.location.href = "cart";
+            if(prodInCartSimple.length > 0){
+                sessionStorage.SessionName = "CartData";
+                sessionStorage.setItem("CartData",prodInCartSimple.toString());
+                window.location.href = "cart";
+            }
             // sessionStorage.getItem("CartData");
 
         });
@@ -47,7 +52,6 @@ function goToCart() {
 
 function showCartPreview() {
     let s = prodInCartSimple.toString();  // work with Array
-    console.log("It should be: " + prodInCartSimple);
     $.ajax({ // create an AJAX call...
         data: {"data": s}, // get the form data
         type: "GET", // GET or POST
@@ -105,7 +109,7 @@ function addProductsToCart(button) {
         productsInCart.set(prodId, 1);
     }
     prodInCartSimple.push(prodId);
-    productCounterLabel.textContent = calcQuantityProdInCart();
+    productCounterLabel.textContent = prodInCartSimple.length;
     console.log(productsInCart);
 }
 
