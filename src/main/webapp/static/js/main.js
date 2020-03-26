@@ -132,7 +132,15 @@ function cartDelete() {
                 sessionStorage.removeItem("CartData");
                 window.location.href = "/"
             }
-        })
+        });
+        cartDelBtn.addEventListener("mouseover", function () {
+            cartDelBtn.style.opacity = "1";
+        });
+        cartDelBtn.addEventListener("mouseleave", function () {
+            console.log("Change!");
+            cartDelBtn.style.opacity = "0.5";
+        });
+
     }
 }
 
