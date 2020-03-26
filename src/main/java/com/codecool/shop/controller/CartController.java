@@ -45,20 +45,23 @@ public class CartController extends HttpServlet {
             }
         }
         // calculate amount of the cart
+//        List<String> amount = prodInCartForAmount.stream()
+//                .map(Product::getPrice)
+//                .collect(Collectors.toList());
+//        List<Double> sliced = amount.stream().map(x -> x.substring(0, x.length()- 4)).map(Double::valueOf).collect(Collectors.toList());
+//        double amoutOfCart = sliced.stream().mapToDouble(x -> x).sum();
+
+        context.setVariable("data", prodInCart);
+        context.setVariable("amount", calcCartAmount(prodInCartForAmount));
+        engine.process("product/cart.html", context, resp.getWriter());
+    }
+
+    // calculate amount of the cart
+    public double calcCartAmount(List<Product> prodInCartForAmount){
         List<String> amount = prodInCartForAmount.stream()
                 .map(Product::getPrice)
                 .collect(Collectors.toList());
         List<Double> sliced = amount.stream().map(x -> x.substring(0, x.length()- 4)).map(Double::valueOf).collect(Collectors.toList());
-        double amoutOfCart = sliced.stream().mapToDouble(x -> x).sum();
-//        System.out.println("The cart was requested");
-//        System.out.println(req.getParameter("qttOfProdTypes"));
-//        int qttOfProdTypes = Integer.parseInt(req.getParameter("qttOfProdTypes"));
-//        for(int i = 1; i<=qttOfProdTypes; i++){
-//            System.out.println(req.getParameter(String.valueOf(i)));
-//        }
-//        System.out.println("Data from server"+req.getParameter("data"));
-        context.setVariable("data", prodInCart);
-        context.setVariable("amount", amoutOfCart);
-        engine.process("product/cart.html", context, resp.getWriter());
+        return sliced.stream().mapToDouble(x -> x).sum();
     }
 }
