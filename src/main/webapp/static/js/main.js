@@ -22,11 +22,12 @@ function mySubmit(theForm) {
 }
 
 function goToCart() {
-    cartBtn = document.getElementById('headerlogoimg');
+    let cartBtn = document.getElementById('headerlogoimg');
     if (cartBtn != null) {
         cartBtn.addEventListener("mouseover", function cartListener () {
             // let s = serialize(productsInCart); // work with Map
             if(prodInCartSimple.length > 0){
+                cartBtn.style.cursor = "pointer";
                 showCartPreview();
             }
             // window.location = "cart"+mapToString();
@@ -126,6 +127,7 @@ function calcQuantityProdInCart() {
 function cartDelete() {
     if(document.getElementById("cartDelete")) {
         let cartDelBtn = document.getElementById("cartDelete");
+        cartDelBtn.style.cursor = "pointer";
         cartDelBtn.addEventListener("click", function () {
             let answer = window.confirm("Delete the cart?");
             if (answer) {
@@ -137,7 +139,6 @@ function cartDelete() {
             cartDelBtn.style.opacity = "1";
         });
         cartDelBtn.addEventListener("mouseleave", function () {
-            console.log("Change!");
             cartDelBtn.style.opacity = "0.5";
         });
 

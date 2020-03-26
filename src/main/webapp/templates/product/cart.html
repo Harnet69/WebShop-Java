@@ -51,7 +51,7 @@
                         <td th:text="${smokeTest.description}">Description</td>
                         <td th:text="${smokeTest.price}">Price</td>
                         <td><label><input th:value="${smokeTest.quantity}" style="width: 30px; background-color: rgba(126, 237, 252, 0.8) " type="number" placeholder="1"></label></td>
-                        <td><img src="/static/img/cartDeleteSm.jpg" alt="Delete the item"></td>
+                        <td><a th:attr="href='cart?id=' + ${smokeTest.id}"><img  src="/static/img/cartDeleteSm.jpg" alt="Delete the item"></a></td>
                     </tr>
                 </th:block>
             </table>
