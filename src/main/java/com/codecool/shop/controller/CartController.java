@@ -59,6 +59,6 @@ public class CartController extends HttpServlet {
 //        System.out.println("Data from server"+req.getParameter("data"));
         context.setVariable("data", prodInCart);
         context.setVariable("amount", amoutOfCart);
-        engine.process("product/cart-preview.html", context, resp.getWriter());
+        engine.process("product/cart.html", context, resp.getWriter());
     }
 }
