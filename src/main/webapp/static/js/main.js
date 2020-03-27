@@ -1,14 +1,18 @@
 let productsInCart = new Map();
 let prodInCartSimple = [];
+
 if(sessionStorage.getItem("CartData")) {
     prodsId = sessionStorage.getItem("CartData").split(',');
     for(i=0; i< prodsId.length; i++){
         prodInCartSimple.push(prodsId[i]);
     }
 }
+
 if(document.getElementsByClassName("quantity")[0]) {
     document.getElementsByClassName("quantity")[0].textContent = prodInCartSimple.length;
 }
+
+
 function mySubmit(theForm) {
     $.ajax({ // create an AJAX call...
         data: $(theForm).serialize(), // get the form data
@@ -59,7 +63,7 @@ function showCartPreview() {
         type: "GET", // GET or POST
         url: "cart-preview", // the file to call
         success: function (response) { // on success..
-            body = document.getElementsByClassName("headerlogo")[0];
+            let body = document.getElementsByClassName("headerlogo")[0];
             if (document.getElementById('cartPreview')) {
                 document.getElementById('cartPreview').remove();
             }
@@ -144,23 +148,31 @@ function cartDelete() {
     }
 }
 
+function itemChangeQttOfProd() {
+    prodQttInCartLabels = document.getElementsByClassName("prodQttInCart");
+    for(let labels of prodQttInCartLabels){
+        labels.addEventListener("input", function (evt) {
+            console.log(this.value);
+        })
+    }
+}
+
 function itemDeleteBtn() {
     if(document.getElementsByClassName("delItmBtn")[0]) {
         let delItemBtns = document.getElementsByClassName("delItmBtn");
         for (let btn of delItemBtns) {
             btn.style.cursor = "pointer";
             btn.addEventListener("click", function () {
-                deleteItemFromQueryString(btn);
+                deleteItemsFromQueryString(btn);
             })
         }
     }
 }
 
-function deleteItemFromQueryString(btn) {
-    queryStringArr = sessionStorage.getItem("CartData").split(",");
-    newString = [];
-    prodIdForDel = btn.getAttribute("data");
-    // console.log(prodIdForDel);
+function deleteItemsFromQueryString(btn) {
+    let queryStringArr = sessionStorage.getItem("CartData").split(",");
+    let newString = [];
+    let prodIdForDel = btn.getAttribute("data");
     for(let num of queryStringArr){
         if(num !== prodIdForDel){
             newString.push(parseInt(num));
@@ -168,6 +180,7 @@ function deleteItemFromQueryString(btn) {
     }
     sessionStorage.setItem("CartData",newString);
     prodInCartSimple = newString;
+
     if(prodInCartSimple.length > 0){
         window.location.href = "cart" + mapToString();
     }else{
@@ -184,3 +197,4 @@ goToCart();
 addListenerToButton();
 cartDelete();
 itemDeleteBtn();
+itemChangeQttOfProd();
