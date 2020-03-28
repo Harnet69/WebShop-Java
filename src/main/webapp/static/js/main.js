@@ -151,13 +151,8 @@ function cartDelete() {
 function itemChangeQttOfProd() {
     let prodQttInCartLabels = document.getElementsByClassName("prodQttInCart");
     for (let label of prodQttInCartLabels) {
-        label.addEventListener("input", function (evt) {
+        label.addEventListener("change", function (evt) {
             changeQttOfItemInQueryString(label);
-        });
-        $(label).keyup(function (event) {
-            if (event.keyCode === 13) {
-                changeQttOfItemInQueryString(label);
-            }
         });
     }
 }
@@ -172,7 +167,7 @@ function changeQttOfItemInQueryString(label) {
     //count accuracy of the prod id in a  cart
     let prodQttInCart = countProdQttInCart(queryString, prodIdForChange);
 
-    if (prodQtt > 0 && prodQtt !== prodQttInCart) {
+    if (prodQtt > 0 && prodQtt <= 10 && prodQtt !== prodQttInCart) {
         if(prodQtt > prodQttInCart){
             for(let i = 0; i < prodQtt - prodQttInCart; i++){
                 newString.push(prodIdForChange);
@@ -192,6 +187,8 @@ function changeQttOfItemInQueryString(label) {
         }
 
         sessionStorage.setItem("CartData", prodInCartSimple);
+        window.location.href = "cart" + mapToString();
+    }else{
         window.location.href = "cart" + mapToString();
     }
 }
@@ -234,11 +231,6 @@ function deleteItemsFromQueryString(btn) {
     } else {
         window.location.href = "/";
     }
-
-    // console.log("Delete! "+btn.getAttribute("data"));
-    // console.log(sessionStorage.getItem("CartData"));
-    // s = sessionStorage.getItem("CartData").replace(btn.getAttribute("data"), '');
-    // console.log(s);
 }
 
 goToCart();

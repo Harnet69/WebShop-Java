@@ -27,20 +27,29 @@ public class CartController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         List<Product> prodInCart = new ArrayList<>();
         List<Product> prodInCartForAmount = new ArrayList<>();
+        int maxProdQttForSale = 10;
 
         String[] ary = req.getParameter("data").split(",");
-        for(String id : ary) {
-            prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
+        for (String id : ary) {
+            if (productDataStore.find(Integer.parseInt(id)) != null) {
+                prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
+            }
         }
 
         // add products and it quantities to array
-        for(String id : ary){
+        for (String id : ary) {
             long prodQtt = Arrays.stream(ary)
                     .filter(x -> x.equals(id))
                     .count();
-            productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
-            if(!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))){
-                prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+            if (productDataStore.find(Integer.parseInt(id)) != null) {
+                if (prodQtt <= 10) {
+                    productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+                } else {
+                    productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
+                }
+                if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
+                    prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+                }
             }
         }
         context.setVariable("data", sortProdInCart(prodInCart));
@@ -49,7 +58,7 @@ public class CartController extends HttpServlet {
     }
 
     // sort products in Cart by id
-    public List<Product> sortProdInCart(List<Product> prodInCart){
+    public List<Product> sortProdInCart(List<Product> prodInCart) {
         Collections.sort(prodInCart, new Comparator<Product>() {
             @Override
             public int compare(Product o1, Product o2) {
@@ -58,6 +67,7 @@ public class CartController extends HttpServlet {
         });
         return prodInCart;
     }
+
     // sort winners
 //    private List<Product> sortWinners(Object prodInCart){
 //        Collections.sort(prodInCart, new Comparator<Product>() {
@@ -70,11 +80,11 @@ public class CartController extends HttpServlet {
 //        return product;
 //    }
     // calculate amount of the cart
-    public double calcCartAmount(List<Product> prodInCartForAmount){
+    public double calcCartAmount(List<Product> prodInCartForAmount) {
         List<String> amount = prodInCartForAmount.stream()
                 .map(Product::getPrice)
                 .collect(Collectors.toList());
-        List<Double> sliced = amount.stream().map(x -> x.substring(0, x.length()- 4)).map(Double::valueOf).collect(Collectors.toList());
+        List<Double> sliced = amount.stream().map(x -> x.substring(0, x.length() - 4)).map(Double::valueOf).collect(Collectors.toList());
         return sliced.stream().mapToDouble(x -> x).sum();
     }
 }
