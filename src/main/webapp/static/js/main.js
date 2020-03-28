@@ -1,14 +1,14 @@
 let productsInCart = new Map();
 let prodInCartSimple = [];
 
-if(sessionStorage.getItem("CartData")) {
+if (sessionStorage.getItem("CartData")) {
     prodsId = sessionStorage.getItem("CartData").split(',');
-    for(i=0; i< prodsId.length; i++){
+    for (i = 0; i < prodsId.length; i++) {
         prodInCartSimple.push(prodsId[i]);
     }
 }
 
-if(document.getElementsByClassName("quantity")[0]) {
+if (document.getElementsByClassName("quantity")[0]) {
     document.getElementsByClassName("quantity")[0].textContent = prodInCartSimple.length;
 }
 
@@ -28,9 +28,9 @@ function mySubmit(theForm) {
 function goToCart() {
     let cartBtn = document.getElementById('headerlogoimg');
     if (cartBtn != null) {
-        cartBtn.addEventListener("mouseover", function cartListener () {
+        cartBtn.addEventListener("mouseover", function cartListener() {
             // let s = serialize(productsInCart); // work with Map
-            if(prodInCartSimple.length > 0){
+            if (prodInCartSimple.length > 0) {
                 cartBtn.style.cursor = "pointer";
                 showCartPreview();
             }
@@ -45,9 +45,9 @@ function goToCart() {
         cartBtn.addEventListener("click", function () {
             // showCartPreview();
             // document.getElementById('cartPreview').removeAttribute('id');
-            if(prodInCartSimple.length > 0){
+            if (prodInCartSimple.length > 0) {
                 sessionStorage.SessionName = "CartData";
-                sessionStorage.setItem("CartData",prodInCartSimple.toString());
+                sessionStorage.setItem("CartData", prodInCartSimple.toString());
                 window.location.href = "cart" + mapToString();
             }
             // sessionStorage.getItem("CartData");
@@ -128,7 +128,7 @@ function calcQuantityProdInCart() {
 }
 
 function cartDelete() {
-    if(document.getElementById("cartDelete")) {
+    if (document.getElementById("cartDelete")) {
         let cartDelBtn = document.getElementById("cartDelete");
         cartDelBtn.style.cursor = "pointer";
         cartDelBtn.addEventListener("click", function () {
@@ -149,16 +149,65 @@ function cartDelete() {
 }
 
 function itemChangeQttOfProd() {
-    prodQttInCartLabels = document.getElementsByClassName("prodQttInCart");
-    for(let labels of prodQttInCartLabels){
-        labels.addEventListener("input", function (evt) {
-            console.log(this.value);
-        })
+    let prodQttInCartLabels = document.getElementsByClassName("prodQttInCart");
+    for (let label of prodQttInCartLabels) {
+        label.addEventListener("input", function (evt) {
+            changeQttOfItemInQueryString(label);
+        });
+        $(label).keyup(function (event) {
+            if (event.keyCode === 13) {
+                changeQttOfItemInQueryString(label);
+            }
+        });
     }
 }
 
+// change quantity of the product in a cart
+function changeQttOfItemInQueryString(label) {
+    let queryString = sessionStorage.getItem("CartData");
+    let prodIdForChange = label.getAttribute("data");
+    let prodQtt = label.getAttribute("value");
+
+    //count accuracy of the prod id in a  cart
+    let prodQttInCart = countProdQttInCart(queryString, prodIdForChange);
+
+    if (parseInt(label.value) > 0 && parseInt(label.value) !== prodQttInCart) {
+        console.log("Change " + label.value);
+        // if (prodQttInCart === 0) {
+        //     window.location.href = "cart" + mapToString();
+        // } else if (prodQttInCart === 1) {
+        //     deleteItemsFromQueryString(label);
+        //     window.location.href = "cart" + mapToString();
+        // }
+    }
+
+    // let queryStringArr = sessionStorage.getItem("CartData").split(",");
+    // let newString = [];
+    // let prodIdForChange = label.getAttribute("data");
+    // let indOfProdInQueryStr = queryStringArr.indexOf(prodIdForChange);
+    // for(let num of queryStringArr){
+    //     if(num !== prodIdForChange){
+    //         newString.push(parseInt(num));
+    //     }
+    //     else if(){
+    //
+    //     }
+    // }
+    // sessionStorage.setItem("CartData",newString);
+    // prodInCartSimple = newString;
+}
+
+//count accuracy of the prod id in a  cart
+function countProdQttInCart(str, prodId) {
+    return countOfProdId = str.split(',')
+        .filter(function (n) {
+            return n === prodId
+        })
+        .length;
+}
+
 function itemDeleteBtn() {
-    if(document.getElementsByClassName("delItmBtn")[0]) {
+    if (document.getElementsByClassName("delItmBtn")[0]) {
         let delItemBtns = document.getElementsByClassName("delItmBtn");
         for (let btn of delItemBtns) {
             btn.style.cursor = "pointer";
@@ -173,17 +222,17 @@ function deleteItemsFromQueryString(btn) {
     let queryStringArr = sessionStorage.getItem("CartData").split(",");
     let newString = [];
     let prodIdForDel = btn.getAttribute("data");
-    for(let num of queryStringArr){
-        if(num !== prodIdForDel){
+    for (let num of queryStringArr) {
+        if (num !== prodIdForDel) {
             newString.push(parseInt(num));
         }
     }
-    sessionStorage.setItem("CartData",newString);
+    sessionStorage.setItem("CartData", newString);
     prodInCartSimple = newString;
 
-    if(prodInCartSimple.length > 0){
+    if (prodInCartSimple.length > 0) {
         window.location.href = "cart" + mapToString();
-    }else{
+    } else {
         window.location.href = "/";
     }
 
