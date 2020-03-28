@@ -31,6 +31,13 @@ public class CartController extends HttpServlet {
 
         String[] ary = req.getParameter("data").split(",");
         for (String id : ary) {
+            try{
+                Integer.parseInt(id);
+            }
+            catch (NumberFormatException e) {
+//                e.printStackTrace();
+                continue;
+            }
             if (productDataStore.find(Integer.parseInt(id)) != null) {
                 prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
             }
@@ -41,6 +48,12 @@ public class CartController extends HttpServlet {
             long prodQtt = Arrays.stream(ary)
                     .filter(x -> x.equals(id))
                     .count();
+            try{
+                Integer.parseInt(id);
+            } catch (Exception e) {
+//                e.printStackTrace();
+                continue;
+            }
             if (productDataStore.find(Integer.parseInt(id)) != null) {
                 if (prodQtt <= 10) {
                     productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
@@ -52,6 +65,7 @@ public class CartController extends HttpServlet {
                 }
             }
         }
+
         context.setVariable("data", sortProdInCart(prodInCart));
         context.setVariable("amount", calcCartAmount(prodInCartForAmount));
         engine.process("product/cart.html", context, resp.getWriter());
