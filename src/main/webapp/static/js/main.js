@@ -234,6 +234,10 @@ function deleteItemsFromQueryString(btn) {
     }
 }
 
+function calcTotalOfProd() {
+
+}
+
 goToCart();
 addListenerToButton();
 cartDelete();

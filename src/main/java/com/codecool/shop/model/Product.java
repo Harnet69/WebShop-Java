@@ -9,6 +9,7 @@ public class Product extends BaseModel {
     private ProductCategory productCategory;
     private Supplier supplier;
     private int quantity;
+    private double total;
 
 
     public Product(String name, double defaultPrice, String currencyString, String description, ProductCategory productCategory, Supplier supplier) {
@@ -41,6 +42,14 @@ public class Product extends BaseModel {
     public void setPrice(double price, String currency) {
         this.defaultPrice = price;
         this.defaultCurrency = Currency.getInstance(currency);
+    }
+
+    public double getTotal() {
+        return defaultPrice * quantity;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public ProductCategory getProductCategory() {
