@@ -173,13 +173,26 @@ function changeQttOfItemInQueryString(label) {
     let prodQttInCart = countProdQttInCart(queryString, prodIdForChange);
 
     if (prodQtt > 0 && prodQtt !== prodQttInCart) {
-        for(let i = 0; i < prodQtt - prodQttInCart; i++){
-            newString.push(prodIdForChange)
+        if(prodQtt > prodQttInCart){
+            for(let i = 0; i < prodQtt - prodQttInCart; i++){
+                newString.push(prodIdForChange);
+                prodInCartSimple = prodInCartSimple.concat(newString);
+            }
+        }else{
+            let qttForDecr = prodQttInCart - prodQtt;
+            let arrAfterRemProd = [];
+            for (let num of prodInCartSimple) {
+                if (num === prodIdForChange && qttForDecr > 0) {
+                    qttForDecr --;
+                }else{
+                    arrAfterRemProd.push(parseInt(num));
+                }
+            }
+            console.log(arrAfterRemProd);
+            prodInCartSimple = arrAfterRemProd;
         }
-        sessionStorage.setItem("CartData", newString.toString());
-        prodInCartSimple = prodInCartSimple.concat(newString);
+
         sessionStorage.setItem("CartData", prodInCartSimple);
-        console.log(sessionStorage.getItem("CartData"));
 
         window.location.href = "cart" + mapToString();
     }
