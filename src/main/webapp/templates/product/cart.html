@@ -52,9 +52,7 @@
                         <td th:text="${smokeTest.price}">Price</td>
                         <td><label><input class="prodQttInCart" th:data="${smokeTest.id}" th:value="${smokeTest.quantity}" style="  width: 50px; background-color: rgba(126, 237, 252, 0.8) " type="number" min="1" max="10" placeholder="1"></label></td>
                         <td>
-<!--                            <a th:attr="href='cart?id=' + ${smokeTest.id}">-->
-                                <img class="delItmBtn" th:data="${smokeTest.id}" src="/static/img/cartDeleteSm.jpg" alt="Delete the item">
-<!--                            </a>-->
+                            <img class="delItmBtn" th:data="${smokeTest.id}" src="/static/img/cartDeleteSm.jpg" alt="Delete the item">
                         </td>
                     </tr>
                 </th:block>

@@ -50,7 +50,7 @@ public class CartController extends HttpServlet {
                 try {
                     Integer.parseInt(id);
                 } catch (Exception e) {
-//                e.printStackTrace();
+//                    e.printStackTrace();
                     continue;
                 }
                 if (productDataStore.find(Integer.parseInt(id)) != null) {

@@ -151,7 +151,7 @@ function cartDelete() {
 function itemChangeQttOfProd() {
     let prodQttInCartLabels = document.getElementsByClassName("prodQttInCart");
     for (let label of prodQttInCartLabels) {
-        label.addEventListener("change", function (evt) {
+        label.addEventListener("change", function () {
             changeQttOfItemInQueryString(label);
         });
     }
@@ -169,14 +169,15 @@ function changeQttOfItemInQueryString(label) {
 
     if (prodQtt > 0 && prodQtt <= 10 && prodQtt !== prodQttInCart) {
         if(prodQtt > prodQttInCart){
-            for(let i = 0; i < prodQtt - prodQttInCart; i++){
+            let qttForDecr = prodQtt - prodQttInCart;
+            for(let i = 0; i < qttForDecr; i++){
                 newString.push(prodIdForChange);
-                prodInCartSimple = prodInCartSimple.concat(newString);
             }
+            prodInCartSimple = prodInCartSimple.concat(newString);
         }else{
             let qttForDecr = prodQttInCart - prodQtt;
             let arrAfterRemProd = [];
-            for (let num of prodInCartSimple.reverse()) {
+            for (let num of prodInCartSimple) {
                 if (num === prodIdForChange && qttForDecr > 0) {
                     qttForDecr --;
                 }else{
