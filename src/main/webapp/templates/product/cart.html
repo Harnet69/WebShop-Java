@@ -42,6 +42,7 @@
                     <th>Description</th>
                     <th>Price</th>
                     <th>Quantity</th>
+                    <th>Total</th>
                     <th>Remove</th>
                 </tr>
                 <th:block th:each="smokeTest : ${data}">
@@ -51,6 +52,10 @@
                         <td th:text="${smokeTest.description}">Description</td>
                         <td th:text="${smokeTest.price}">Price</td>
                         <td><label><input class="prodQttInCart" th:data="${smokeTest.id}" th:value="${smokeTest.quantity}" style="  width: 50px; background-color: rgba(126, 237, 252, 0.8) " type="number" min="1" max="10" placeholder="1"></label></td>
+                        <th:block th:with="result=${#numbers.formatDecimal(smokeTest.quantity, 0, 'COMMA', 2, 'POINT') * 5}">
+                            <td th:text="${result}">Total</td>
+                        </th:block>
+<!--                        <td th:text="${#numbers.formatDecimal(smokeTest.quantity, 0, 'COMMA', 2, 'POINT')}">Total</td>-->
                         <td>
                             <img class="delItmBtn" th:data="${smokeTest.id}" src="/static/img/cartDeleteSm.jpg" alt="Delete the item">
                         </td>
