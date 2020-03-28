@@ -3,7 +3,6 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
-import com.codecool.shop.model.BaseModel;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -29,46 +28,50 @@ public class CartController extends HttpServlet {
         List<Product> prodInCartForAmount = new ArrayList<>();
         int maxProdQttForSale = 10;
 
-        String[] ary = req.getParameter("data").split(",");
-        for (String id : ary) {
-            try{
-                Integer.parseInt(id);
-            }
-            catch (NumberFormatException e) {
+        if(req.getParameter("data") != null) {
+            String[] ary = req.getParameter("data").split(",");
+            for (String id : ary) {
+                try {
+                    Integer.parseInt(id);
+                } catch (NumberFormatException e) {
 //                e.printStackTrace();
-                continue;
-            }
-            if (productDataStore.find(Integer.parseInt(id)) != null) {
-                prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
-            }
-        }
-
-        // add products and it quantities to array
-        for (String id : ary) {
-            long prodQtt = Arrays.stream(ary)
-                    .filter(x -> x.equals(id))
-                    .count();
-            try{
-                Integer.parseInt(id);
-            } catch (Exception e) {
-//                e.printStackTrace();
-                continue;
-            }
-            if (productDataStore.find(Integer.parseInt(id)) != null) {
-                if (prodQtt <= 10) {
-                    productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
-                } else {
-                    productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
+                    continue;
                 }
-                if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
-                    prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+                if (productDataStore.find(Integer.parseInt(id)) != null) {
+                    prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
                 }
             }
-        }
 
-        context.setVariable("data", sortProdInCart(prodInCart));
-        context.setVariable("amount", calcCartAmount(prodInCartForAmount));
-        engine.process("product/cart.html", context, resp.getWriter());
+            // add products and it quantities to array
+            for (String id : ary) {
+                long prodQtt = Arrays.stream(ary)
+                        .filter(x -> x.equals(id))
+                        .count();
+                try {
+                    Integer.parseInt(id);
+                } catch (Exception e) {
+//                e.printStackTrace();
+                    continue;
+                }
+                if (productDataStore.find(Integer.parseInt(id)) != null) {
+                    if (prodQtt <= 10) {
+                        productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+                    } else {
+                        productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
+                    }
+                    if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
+                        prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+                    }
+                }
+            }
+
+            context.setVariable("data", sortProdInCart(prodInCart));
+            context.setVariable("amount", calcCartAmount(prodInCartForAmount));
+            engine.process("product/cart.html", context, resp.getWriter());
+        }else{
+            context.setVariable("products", productDataStore.getAll());
+            engine.process("product/index.html", context, resp.getWriter());
+        }
     }
 
     // sort products in Cart by id
