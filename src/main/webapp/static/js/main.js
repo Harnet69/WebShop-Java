@@ -181,19 +181,17 @@ function changeQttOfItemInQueryString(label) {
         }else{
             let qttForDecr = prodQttInCart - prodQtt;
             let arrAfterRemProd = [];
-            for (let num of prodInCartSimple) {
+            for (let num of prodInCartSimple.reverse()) {
                 if (num === prodIdForChange && qttForDecr > 0) {
                     qttForDecr --;
                 }else{
                     arrAfterRemProd.push(parseInt(num));
                 }
             }
-            console.log(arrAfterRemProd);
             prodInCartSimple = arrAfterRemProd;
         }
 
         sessionStorage.setItem("CartData", prodInCartSimple);
-
         window.location.href = "cart" + mapToString();
     }
 }

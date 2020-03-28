@@ -3,6 +3,7 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.model.BaseModel;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -13,9 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/cart"})
@@ -44,12 +43,32 @@ public class CartController extends HttpServlet {
                 prodInCart.add(productDataStore.find(Integer.parseInt(id)));
             }
         }
-
-        context.setVariable("data", prodInCart);
+        context.setVariable("data", sortProdInCart(prodInCart));
         context.setVariable("amount", calcCartAmount(prodInCartForAmount));
         engine.process("product/cart.html", context, resp.getWriter());
     }
 
+    // sort products in Cart by id
+    public List<Product> sortProdInCart(List<Product> prodInCart){
+        Collections.sort(prodInCart, new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        });
+        return prodInCart;
+    }
+    // sort winners
+//    private List<Product> sortWinners(Object prodInCart){
+//        Collections.sort(prodInCart, new Comparator<Product>() {
+//            @Override
+//            public int compare(Product o1, Product o2) {
+//                return Integer.compare(o2.getId(), o1.getId());
+//            }
+//        });
+//
+//        return product;
+//    }
     // calculate amount of the cart
     public double calcCartAmount(List<Product> prodInCartForAmount){
         List<String> amount = prodInCartForAmount.stream()
