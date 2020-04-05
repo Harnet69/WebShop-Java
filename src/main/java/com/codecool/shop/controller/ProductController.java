@@ -19,40 +19,15 @@ import java.io.IOException;
 public class ProductController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        if (req.getParameter("category") == null && req.getParameter("supplier") == null) {
-            context.setVariable("products", productDataStore.getAll());
-            engine.process("product/index.html", context, resp.getWriter());
-        }
-        else if(req.getParameter("category").equals("all") && !req.getParameter("supplier").equals("all")){
-            context.setVariable("products", productDataStore.getBySupplier(req.getParameter("supplier")));
-            engine.process("product/products.html", context, resp.getWriter());
-        }
-        else if(!req.getParameter("category").equals("all") && req.getParameter("supplier").equals("all")){
-            context.setVariable("products", productDataStore.getByCategory(req.getParameter("category")));
-            engine.process("product/products.html", context, resp.getWriter());
-        }
-        else if (req.getParameter("category").equals("all") && req.getParameter("supplier").equals("all")) {
-            context.setVariable("products", productDataStore.getAll());
-            engine.process("product/products.html", context, resp.getWriter());
-        }
-        else if(req.getParameter("category") != null && req.getParameter("supplier") != null){
-            context.setVariable("products", productDataStore.getByCategorySupplier(req.getParameter("category") ,req.getParameter("supplier")));
-            engine.process("product/products.html", context, resp.getWriter());
-        }
-
-        // // Alternative setting of the template context
-        // Map<String, Object> params = new HashMap<>();
-        // params.put("category", productCategoryDataStore.find(1));
-        // params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-        // context.setVariables(params);
-//        engine.process("product/index.html", context, resp.getWriter());
+        CatController cat = new CatController();
+        cat.filterProducts(productDataStore, productCategoryDataStore, engine, context, req, resp);
     }
 
 }
