@@ -2,6 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.JDBC.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,12 @@ public class CartController extends HttpServlet {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        ProductDaoJdbc jdbc = new ProductDaoJdbc();
+        try {
+            jdbc.getAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         List<Product> prodInCart = new ArrayList<>();
         List<Product> prodInCartForAmount = new ArrayList<>();
         int maxProdQttForSale = 10;
@@ -69,7 +77,11 @@ public class CartController extends HttpServlet {
             context.setVariable("amount", calcCartAmount(prodInCartForAmount));
             engine.process("product/cart.html", context, resp.getWriter());
         }else{
-            context.setVariable("products", productDataStore.getAll());
+            try {
+                context.setVariable("products", productDataStore.getAll());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             engine.process("product/index.html", context, resp.getWriter());
         }
     }
