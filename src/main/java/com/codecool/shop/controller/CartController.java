@@ -26,12 +26,7 @@ public class CartController extends HttpServlet {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        ProductDaoJdbc jdbc = new ProductDaoJdbc();
-        try {
-            jdbc.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
         List<Product> prodInCart = new ArrayList<>();
         List<Product> prodInCartForAmount = new ArrayList<>();
         int maxProdQttForSale = 10;

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
+// make class generic ???
 public class CatController {
     public void filterProducts (ProductDao productDataStore, ProductCategoryDao productCategoryDataStore,
                                 TemplateEngine engine, WebContext context, HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {

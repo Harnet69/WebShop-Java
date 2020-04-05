@@ -2,6 +2,7 @@ package com.codecool.shop.dao.implementation.JDBC;
 
 import com.codecool.shop.connect.JDBC;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -15,6 +16,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao {
+
+    private List<Product> data = new ArrayList<>();
+    private static ProductDaoJdbc instance = null;
+
+    /* A private Constructor prevents any other class from instantiating.
+     */
+    private ProductDaoJdbc() {
+    }
+
+    public static ProductDaoJdbc getInstance() {
+        if (instance == null) {
+            instance = new ProductDaoJdbc();
+        }
+        return instance;
+    }
+
     @Override
     public void add(Product product) {
 
@@ -32,6 +49,8 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getAll() throws SQLException {
+        List<Product> allProducts = new ArrayList<>();
+
         DataSource dataSource = JDBC.connect();
         Statement stmt = dataSource.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM product");
@@ -43,7 +62,9 @@ public class ProductDaoJdbc implements ProductDao {
             String name = rs.getString("name");
             String image = rs.getString("image");
             String description = rs.getString("description");
+            // TODO add Product from database to Array and pass it to Product Controller
 
+            //            allProducts.add(new Product())
             System.out.println(id + name + image);
 //            authorsFromDb.add(new Author(id, first, last, birth));
         }

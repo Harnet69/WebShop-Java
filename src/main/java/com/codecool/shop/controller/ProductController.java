@@ -2,6 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.JDBC.ProductCategoryDaoJdbc;
 import com.codecool.shop.dao.implementation.JDBC.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
@@ -22,18 +23,22 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+        //work with data store
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+
+        // work with database
+        ProductDaoJdbc productJdbc = ProductDaoJdbc.getInstance();
+        ProductCategoryDaoJdbc productCategoryDataJdbc = ProductCategoryDaoJdbc.getInstance();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        ProductDaoJdbc jdbc = new ProductDaoJdbc();
-        try {
-            jdbc.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            jdbc.getAll();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
         CatController cat = new CatController();
         try {
