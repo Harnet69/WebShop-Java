@@ -29,5 +29,4 @@ public class ProductController extends HttpServlet {
         CatController cat = new CatController();
         cat.filterProducts(productDataStore, productCategoryDataStore, engine, context, req, resp);
     }
-
 }
