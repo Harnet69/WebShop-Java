@@ -13,9 +13,9 @@ public class JDBC {
         dataSource.setUser("harnet");
         dataSource.setPassword("1234");
 
-        System.out.println("Trying to connect...");
+//        System.out.println("Trying to connect...");
         dataSource.getConnection().close();
-        System.out.println("Connection OK");
+//        System.out.println("Connection OK");
 
         return dataSource;
     }

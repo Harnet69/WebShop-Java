@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao {
-
     private List<Product> data = new ArrayList<>();
+
     private static ProductDaoJdbc instance = null;
 
     /* A private Constructor prevents any other class from instantiating.
@@ -47,7 +47,6 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getAll() throws SQLException {
-        List<Product> data = new ArrayList<>();
         String sql = "SELECT p.id as id, p.name as name, p.description as description, p.default_price as defaultPrice, p.default_currency as defaultCurrency,\n" +
                 "    c.name as productCategory, c.department as catDep, c.description as catDesc,\n" +
                 "        s.name as supplierName, s.description as supplDesc  FROM product as p\n" +
