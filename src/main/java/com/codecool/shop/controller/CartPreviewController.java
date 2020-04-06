@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,11 @@ public class CartPreviewController extends HttpServlet {
 
         String[] ary = req.getParameter("data").split(",");
         for(String id : ary) {
-            prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
+            try {
+                prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         // add products and it quantities to array
@@ -45,9 +50,17 @@ public class CartPreviewController extends HttpServlet {
             long prodQtt = Arrays.stream(ary)
                     .filter(x -> x.equals(id))
                     .count();
-            productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
-            if(!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))){
-                prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+            try {
+                productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if(!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))){
+                    prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         // calculate amount of the cart

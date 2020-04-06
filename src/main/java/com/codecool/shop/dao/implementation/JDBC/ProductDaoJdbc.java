@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao {
     private List<Product> data = new ArrayList<>();
-
+    private ProductDaoSql sql = new ProductDaoSql();
     private static ProductDaoJdbc instance = null;
 
     /* A private Constructor prevents any other class from instantiating.
@@ -36,7 +36,7 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public Product find(int id) {
+    public Product find(int id){
         return null;
     }
 
@@ -47,14 +47,7 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getAll() throws SQLException {
-        String sql = "SELECT p.id as id, p.name as name, p.description as description, p.default_price as defaultPrice, p.default_currency as defaultCurrency,\n" +
-                "    c.name as productCategory, c.department as catDep, c.description as catDesc,\n" +
-                "        s.name as supplierName, s.description as supplDesc  FROM product as p\n" +
-                "LEFT JOIN category c on p.product_cat = c.id\n" +
-                "LEFT JOIN supplier s on p.supplier = s.id";
-        DataSource dataSource = JDBC.connect();
-        Statement stmt = dataSource.getConnection().createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
+        ResultSet rs = sql.getAllProducts();
 
         while(rs.next()){
             //Retrieve by column name
@@ -86,6 +79,7 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getBySupplier(String supplierName) {
+//        return get("WHERE s.name = );
         return null;
     }
 

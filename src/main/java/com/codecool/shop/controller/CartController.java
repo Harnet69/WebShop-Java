@@ -40,8 +40,12 @@ public class CartController extends HttpServlet {
 //                e.printStackTrace();
                     continue;
                 }
-                if (productDataStore.find(Integer.parseInt(id)) != null) {
-                    prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
+                try {
+                    if (productDataStore.find(Integer.parseInt(id)) != null) {
+                        prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -56,15 +60,19 @@ public class CartController extends HttpServlet {
 //                    e.printStackTrace();
                     continue;
                 }
-                if (productDataStore.find(Integer.parseInt(id)) != null) {
-                    if (prodQtt <= 10) {
-                        productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
-                    } else {
-                        productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
+                try {
+                    if (productDataStore.find(Integer.parseInt(id)) != null) {
+                        if (prodQtt <= 10) {
+                            productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+                        } else {
+                            productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
+                        }
+                        if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
+                            prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+                        }
                     }
-                    if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
-                        prodInCart.add(productDataStore.find(Integer.parseInt(id)));
-                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
 
