@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao {
-    private List<Product> data = new ArrayList<>();
+//    private List<Product> data = new ArrayList<>();
     private ProductDaoSql sql = new ProductDaoSql();
     private static ProductDaoJdbc instance = null;
 
@@ -30,25 +30,8 @@ public class ProductDaoJdbc implements ProductDao {
         return instance;
     }
 
-    @Override
-    public void add(Product product) {
-
-    }
-
-    @Override
-    public Product find(int id){
-        return null;
-    }
-
-    @Override
-    public void remove(int id) {
-
-    }
-
-    @Override
-    public List<Product> getAll() throws SQLException {
-        ResultSet rs = sql.getAllProducts();
-
+    private List<Product> getProductsFromDB(ResultSet rs) throws SQLException {
+        List<Product> data = new ArrayList<>();
         while(rs.next()){
             //Retrieve by column name
             int id  = rs.getInt("id");
@@ -73,14 +56,37 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getBy(Supplier supplier) {
+    public void add(Product product) {
+
+    }
+
+    @Override
+    public Product find(int id){
         return null;
     }
 
     @Override
-    public List<Product> getBySupplier(String supplierName) {
-//        return get("WHERE s.name = );
+    public void remove(int id) {
+
+    }
+
+    @Override
+    public List<Product> getAll() throws SQLException {
+        ResultSet rs = sql.getAllProducts();
+        return getProductsFromDB(rs);
+    }
+
+    @Override
+    public List<Product> getBy(Supplier supplier) throws SQLException {
+//        ResultSet rs = sql.getProductsBySupplier(supplier);
+//        return getProductsFromDB(rs);
         return null;
+    }
+
+    @Override
+    public List<Product> getBySupplier(String supplierName) throws SQLException {
+        ResultSet rs = sql.getProductsBySupplier(supplierName);
+        return getProductsFromDB(rs);
     }
 
     @Override

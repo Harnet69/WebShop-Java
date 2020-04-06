@@ -1,8 +1,10 @@
 package com.codecool.shop.dao.implementation.JDBC;
 
 import com.codecool.shop.connect.JDBC;
+import com.codecool.shop.model.Supplier;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,5 +20,12 @@ public class ProductDaoSql {
         DataSource dataSource = JDBC.connect();
         Statement stmt = dataSource.getConnection().createStatement();
         return stmt.executeQuery(baseSqlString);
+    }
+
+    public ResultSet getProductsBySupplier(String supplierName) throws SQLException {
+        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE s.name = ?");
+        statement.setString(1, supplierName);
+        return statement.executeQuery();
     }
 }
