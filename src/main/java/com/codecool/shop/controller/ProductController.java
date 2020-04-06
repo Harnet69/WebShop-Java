@@ -26,8 +26,6 @@ public class ProductController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-
-//        CatController cat = new CatController();
         try {
             // you can switch between products in memory and from database
             CatController.filterProducts(productJdbc, engine, context, req, resp);

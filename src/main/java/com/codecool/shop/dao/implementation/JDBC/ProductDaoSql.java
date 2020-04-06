@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ProductDaoSql {
-    String baseSqlString = "SELECT p.id as id, p.name as name, p.description as description, p.default_price as defaultPrice, p.default_currency as defaultCurrency,\n" +
+    private String baseSqlString = "SELECT p.id as id, p.name as name, p.description as description, p.default_price as defaultPrice, p.default_currency as defaultCurrency,\n" +
             "    c.name as productCategory, c.department as catDep, c.description as catDesc,\n" +
             "        s.name as supplierName, s.description as supplDesc  FROM product as p\n" +
             "LEFT JOIN category c on p.product_cat = c.id\n" +
@@ -26,6 +26,21 @@ public class ProductDaoSql {
         DataSource dataSource = JDBC.connect();
         PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE s.name = ?");
         statement.setString(1, supplierName);
+        return statement.executeQuery();
+    }
+
+    public ResultSet getProductsByCategory(String categoryName) throws SQLException {
+        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE c.name = ?");
+        statement.setString(1, categoryName);
+        return statement.executeQuery();
+    }
+
+    public ResultSet getProductsByCategory(String categoryName,String supplierName) throws SQLException {
+        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE c.name = ? AND s.name = ?");
+        statement.setString(1, categoryName);
+        statement.setString(2, supplierName);
         return statement.executeQuery();
     }
 }

@@ -1,20 +1,16 @@
 package com.codecool.shop.dao.implementation.JDBC;
 
-import com.codecool.shop.connect.JDBC;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao {
-//    private List<Product> data = new ArrayList<>();
     private ProductDaoSql sql = new ProductDaoSql();
     private static ProductDaoJdbc instance = null;
 
@@ -30,6 +26,7 @@ public class ProductDaoJdbc implements ProductDao {
         return instance;
     }
 
+    //use for all methods
     private List<Product> getProductsFromDB(ResultSet rs) throws SQLException {
         List<Product> data = new ArrayList<>();
         while(rs.next()){
@@ -57,7 +54,6 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public void add(Product product) {
-
     }
 
     @Override
@@ -67,7 +63,6 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public void remove(int id) {
-
     }
 
     @Override
@@ -78,8 +73,6 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getBy(Supplier supplier) throws SQLException {
-//        ResultSet rs = sql.getProductsBySupplier(supplier);
-//        return getProductsFromDB(rs);
         return null;
     }
 
@@ -90,13 +83,15 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getByCategory(String categoryName) {
-        return null;
+    public List<Product> getByCategory(String categoryName) throws SQLException {
+        ResultSet rs = sql.getProductsByCategory(categoryName);
+        return getProductsFromDB(rs);
     }
 
     @Override
-    public List<Product> getByCategorySupplier(String category, String supplierName) {
-        return null;
+    public List<Product> getByCategorySupplier(String categoryName, String supplierName) throws SQLException {
+        ResultSet rs = sql.getProductsByCategory(categoryName, supplierName);
+        return getProductsFromDB(rs);
     }
 
     @Override
