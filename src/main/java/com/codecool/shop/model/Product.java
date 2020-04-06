@@ -3,7 +3,7 @@ package com.codecool.shop.model;
 import java.util.Currency;
 
 public class Product extends BaseModel {
-
+    private int id;
     private double defaultPrice;
     private Currency defaultCurrency;
     private ProductCategory productCategory;
@@ -17,6 +17,16 @@ public class Product extends BaseModel {
         this.setPrice(defaultPrice, currencyString);
         this.setSupplier(supplier);
         this.setProductCategory(productCategory);
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double getDefaultPrice() {

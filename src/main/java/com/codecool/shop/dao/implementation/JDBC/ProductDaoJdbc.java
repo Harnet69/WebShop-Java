@@ -2,13 +2,11 @@ package com.codecool.shop.dao.implementation.JDBC;
 
 import com.codecool.shop.connect.JDBC;
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
 import javax.sql.DataSource;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -49,29 +47,37 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getAll() throws SQLException {
-        List<Product> allProducts = new ArrayList<>();
-
+        List<Product> data = new ArrayList<>();
+        String sql = "SELECT p.id as id, p.name as name, p.description as description, p.default_price as defaultPrice, p.default_currency as defaultCurrency,\n" +
+                "    c.name as productCategory, c.department as catDep, c.description as catDesc,\n" +
+                "        s.name as supplierName, s.description as supplDesc  FROM product as p\n" +
+                "LEFT JOIN category c on p.product_cat = c.id\n" +
+                "LEFT JOIN supplier s on p.supplier = s.id";
         DataSource dataSource = JDBC.connect();
         Statement stmt = dataSource.getConnection().createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM product");
-//        List<Author> authorsFromDb = new ArrayList<>();
+        ResultSet rs = stmt.executeQuery(sql);
 
         while(rs.next()){
             //Retrieve by column name
             int id  = rs.getInt("id");
             String name = rs.getString("name");
-            String image = rs.getString("image");
             String description = rs.getString("description");
-            // TODO add Product from database to Array and pass it to Product Controller
+            float defaultPrice = rs.getFloat("defaultPrice");
+            String defaultCurrency = rs.getString("defaultCurrency");
+            String productCategory = rs.getString("productCategory");
+            String catDep = rs.getString("catDep");
+            String catDesc = rs.getString("catDesc");
+            String supplierName = rs.getString("supplierName");
+            String supplDesc = rs.getString("supplDesc");
 
-            //            allProducts.add(new Product())
-            System.out.println(id + name + image);
-//            authorsFromDb.add(new Author(id, first, last, birth));
+            Product product = new Product(name, defaultPrice, defaultCurrency, description,
+                    new ProductCategory(productCategory, catDep, catDesc),
+                    new Supplier(supplierName, supplDesc));
+            product.setId(id);
+            data.add(product);
         }
         rs.close();
-
-//        return authorsFromDb;
-        return null;
+        return data;
     }
 
     @Override
