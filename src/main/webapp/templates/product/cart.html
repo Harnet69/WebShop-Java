@@ -34,7 +34,8 @@
             <a href="/"><img id="logo" src="static/img/codecool-logo.png"></a><h1>Shopping cart</h1>
         </div>
         <div class="container">
-            <div style="text-align: right"><img id="cartDelete" src="/static/img/cartDeleteSm.jpg" alt="Delete the cart"></div>
+            <div style="text-align: right"><img id="cartDelete" src="/static/img/cartDeleteSm.jpg"
+                                                alt="Delete the cart"></div>
             <table class="cart-preview-table" >
                 <tr>
                     <th>Model</th>
@@ -48,16 +49,14 @@
                 <th:block th:each="smokeTest : ${data}">
                     <tr>
                         <td th:text="${smokeTest.name}">Product name</td>
-                        <td><img style="height: 60px" src="http://placehold.it/400x250/000/fff" th:attr="src='static/img/product_' + ${smokeTest.id} + '.jpg'" alt="" /></td>
+                        <td><img style="height: 60px" src="http://placehold.it/400x250/000/fff"
+                                 th:attr="src='static/img/product_' + ${smokeTest.id} + '.jpg'" alt="" /></td>
                         <td th:text="${smokeTest.description}">Description</td>
                         <td th:text="${smokeTest.price}">Price</td>
-                        <td><label><input class="prodQttInCart" th:data="${smokeTest.id}" th:value="${smokeTest.quantity}" style="  width: 50px; background-color: rgba(126, 237, 252, 0.8) " type="number" min="1" max="10" placeholder="1"></label></td>
-<!--                        <th:block th:with="result=${(#strings.substring(smokeTest.price, 0, #strings.length(smokeTest.price)-6))}">-->
-<!--                            <th:block th:with="price=${#numbers.formatDecimal(result, 0, 'COMMA', 2, 'POINT')}">-->
-<!--                                <td th:text="${price}">Total</td>-->
-<!--                            </th:block>-->
-<!--                        </th:block>-->
-<!--                        <td th:text="${#numbers.formatDecimal(smokeTest.quantity, 0, 'COMMA', 2, 'POINT')}">Total</td>-->
+                        <td><label><input class="prodQttInCart" th:data="${smokeTest.id}"
+                                          th:value="${smokeTest.quantity}" style="  width: 50px;
+                                          background-color: rgba(126, 237, 252, 0.8) "
+                                          type="number" min="1" max="10" placeholder="1"></label></td>
                         <td th:text="${smokeTest.getTotal()}" class="amount">Amount</td>
                         <td>
                             <img class="delItmBtn" th:data="${smokeTest.id}" src="/static/img/cartDeleteSm.jpg" alt="Delete the item">
@@ -65,12 +64,14 @@
                     </tr>
                 </th:block>
             </table>
-            <div>
-                <p style=" text-align: right; margin-right: 30px; font-size: large; font-weight: bold">Amount:&nbsp<span th:text="${amount}+' USD'"></span></p>
+            <div style="text-align: right">
+                <p style=" text-align: right; margin-right: 30px; font-size: large; font-weight: bold">Amount:&nbsp<span th:text="${amount}+' USD'"></span>
+                <button id="orderBtn" style="float: right" type="button" class="btn btn-success">Order it</button>
+                </p>
             </div>
         </div>
 
-        <div style="float: left" th:replace="footer.html :: copy"></div>
+        <div th:replace="footer.html :: copy"></div>
 
     </body>
 </html>
