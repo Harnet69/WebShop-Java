@@ -8,6 +8,7 @@ import com.codecool.shop.model.Supplier;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao {
@@ -57,8 +58,8 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public Product find(int id){
-        return null;
+    public Product find(int id) throws SQLException {
+        return getOrderedProdsById(String.valueOf(id)).get(0);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getBy(Supplier supplier) throws SQLException {
-        return null;
+        return getBySupplier(supplier.getName());
     }
 
     @Override
@@ -95,7 +96,17 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getBy(ProductCategory productCategory) {
-        return null;
+    public List<Product> getBy(ProductCategory productCategory) throws SQLException {
+        return getByCategory(productCategory.getName());
+    }
+
+    public List<Product> getOrderedProdsById(String productsId) throws SQLException {
+        List<String> myList = new ArrayList<>(Arrays.asList(productsId.split(",")));
+        List<Product> orderedProds= new ArrayList<>();
+        for(String id : myList){
+            ResultSet rs = sql.getProductsById(Integer.parseInt(id));
+            orderedProds.add(getProductsFromDB(rs).get(0));
+        }
+        return orderedProds;
     }
 }

@@ -237,14 +237,15 @@ function deleteItemsFromQueryString(btn) {
 // go to order
 function sendOrder() {
     const button = document.getElementById('orderBtn');
-
-    button.addEventListener('click', async _ => {
-        if (prodInCartSimple.length > 0) {
-            sessionStorage.SessionName = "CartData";
-            sessionStorage.setItem("CartData", prodInCartSimple.toString());
-            window.location.href = "order" + mapToString();
-        }
-    });
+    if(button != null) {
+        button.addEventListener('click', async _ => {
+            if (prodInCartSimple.length > 0) {
+                sessionStorage.SessionName = "CartData";
+                sessionStorage.setItem("CartData", prodInCartSimple.toString());
+                window.location.href = "order" + mapToString();
+            }
+        });
+    }
 
 }
 

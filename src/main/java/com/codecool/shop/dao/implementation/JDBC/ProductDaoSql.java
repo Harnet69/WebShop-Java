@@ -43,4 +43,11 @@ public class ProductDaoSql {
         statement.setString(2, supplierName);
         return statement.executeQuery();
     }
+
+    public ResultSet getProductsById(int productsId) throws SQLException {
+        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE p.id = ?");
+        statement.setInt(1, productsId);
+        return statement.executeQuery();
+    }
 }
