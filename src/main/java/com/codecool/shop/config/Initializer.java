@@ -14,6 +14,7 @@ import com.codecool.shop.model.Supplier;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,11 +56,19 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Apple 10.5' iPad Air", 499, "USD", "Updated from the same one you know and love, features a few improvements to provide you with a better experience", tablet, apple));
 
         // setting products to db from sql file
-        try {
-            executeUpdateFromFile("src/main/sql/init_db.sql");
-        } catch (Exception e) {
-            e.printStackTrace();
+        // test to see if a file exists
+        File f = new File("src/main/sql/", "init_db.sql");
+        if(f.exists()) {
+            System.out.println("Exists!");
+            try {
+                executeUpdateFromFile("src/main/sql/init_db.sql");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("File not exists");
         }
+
     }
 
     public void executeUpdateFromFile(String filePath) {
