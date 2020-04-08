@@ -269,10 +269,6 @@ function login() {
                         document.getElementById("login-form").remove();
                         location.reload();
                     }
-                    // let userName = document.createElement("label");
-                    //     userName.textContent = "Hello " + getCookie('email');
-                    // document.getElementsByClassName("headerlogo")[0].appendChild(userName);
-                    // alert(data); // show response from the php script.
                 }
             }
         });
@@ -299,10 +295,25 @@ if(getCookie('email')) {
     if (document.getElementById("login-form")) {
         document.getElementById("login-form").remove();
     }
-    let userName = document.createElement("div");
-    userName.textContent = "Hello " + getCookie('email');
-    userName.setAttribute("id", "userName");
-    document.getElementsByClassName("headerlogo")[0].appendChild(userName);
+    let userNameDiv = document.createElement("div");
+    let userNameLabel = document.createElement("label");
+    let logOut = document.createElement("button");
+    userNameLabel.textContent = "Hello " + getCookie('email');
+    logOut.textContent = 'Log Out';
+    userNameDiv.setAttribute("id", "userName");
+    logOut.setAttribute("id", "logOut");
+    userNameDiv.appendChild(userNameLabel);
+    userNameDiv.appendChild(logOut);
+    document.getElementsByClassName("headerlogo")[0].appendChild(userNameDiv);
+}
+
+function logOut() {
+    if(document.getElementById("logOut")) {
+        document.getElementById("logOut").addEventListener("click", function () {
+            document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            location.reload();
+        })
+    }
 }
 
 
@@ -313,3 +324,4 @@ itemDeleteBtn();
 itemChangeQttOfProd();
 sendOrder();
 login();
+logOut();
