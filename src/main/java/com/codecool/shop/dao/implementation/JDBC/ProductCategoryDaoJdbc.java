@@ -43,7 +43,7 @@ public class ProductCategoryDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getAll() throws SQLException {
+    public List<Product> getAll(){
         return null;
     }
 

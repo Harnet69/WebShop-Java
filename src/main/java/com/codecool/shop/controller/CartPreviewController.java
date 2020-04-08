@@ -38,11 +38,7 @@ public class CartPreviewController extends HttpServlet {
 
         String[] ary = req.getParameter("data").split(",");
         for(String id : ary) {
-            try {
-                prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
         }
 
         // add products and it quantities to array
@@ -50,17 +46,9 @@ public class CartPreviewController extends HttpServlet {
             long prodQtt = Arrays.stream(ary)
                     .filter(x -> x.equals(id))
                     .count();
-            try {
-                productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if(!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))){
-                    prodInCart.add(productDataStore.find(Integer.parseInt(id)));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+            if(!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))){
+                prodInCart.add(productDataStore.find(Integer.parseInt(id)));
             }
         }
         // calculate amount of the cart

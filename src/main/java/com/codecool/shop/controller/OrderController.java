@@ -2,7 +2,6 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.JDBC.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
@@ -14,16 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @WebServlet(urlPatterns = {"/order"})
 public class OrderController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //// work with products from DB
 //        ProductDaoJdbc productJdbc = ProductDaoJdbc.getInstance();
 //
 //        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
@@ -44,22 +42,24 @@ public class OrderController extends HttpServlet {
 
         List<Product> prodInCart = new ArrayList<>();
         List<Product> prodInCartForAmount = new ArrayList<>();
+        String[] ary = new String[0];
         int maxProdQttForSale = 10;
 
-        String[] ary = req.getParameter("data").split(",");
+        try {
+            ary = req.getParameter("data").split(",");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         for (String id : ary) {
             try {
                 Integer.parseInt(id);
             } catch (NumberFormatException e) {
-//                e.printStackTrace();
+                e.printStackTrace();
                 continue;
             }
-            try {
-                if (productDataStore.find(Integer.parseInt(id)) != null) {
-                    prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (productDataStore.find(Integer.parseInt(id)) != null) {
+                prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
             }
         }
 
@@ -71,22 +71,18 @@ public class OrderController extends HttpServlet {
             try {
                 Integer.parseInt(id);
             } catch (Exception e) {
-//                    e.printStackTrace();
+                    e.printStackTrace();
                 continue;
             }
-            try {
-                if (productDataStore.find(Integer.parseInt(id)) != null) {
-                    if (prodQtt <= 10) {
-                        productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
-                    } else {
-                        productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
-                    }
-                    if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
-                        prodInCart.add(productDataStore.find(Integer.parseInt(id)));
-                    }
+            if (productDataStore.find(Integer.parseInt(id)) != null) {
+                if (prodQtt <= 10) {
+                    productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+                } else {
+                    productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
+                    prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+                }
             }
         }
 
@@ -97,7 +93,7 @@ public class OrderController extends HttpServlet {
 
     // sort products in Cart by id
     public List<Product> sortProdInCart(List<Product> prodInCart) {
-        Collections.sort(prodInCart, new Comparator<Product>() {
+        prodInCart.sort(new Comparator<Product>() {
             @Override
             public int compare(Product o1, Product o2) {
                 return Integer.compare(o1.getId(), o2.getId());

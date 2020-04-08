@@ -2,7 +2,6 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.JDBC.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,15 +35,11 @@ public class CartController extends HttpServlet {
                 try {
                     Integer.parseInt(id);
                 } catch (NumberFormatException e) {
-//                e.printStackTrace();
+                e.printStackTrace();
                     continue;
                 }
-                try {
-                    if (productDataStore.find(Integer.parseInt(id)) != null) {
-                        prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                if (productDataStore.find(Integer.parseInt(id)) != null) {
+                    prodInCartForAmount.add(productDataStore.find(Integer.parseInt(id)));
                 }
             }
 
@@ -57,22 +51,18 @@ public class CartController extends HttpServlet {
                 try {
                     Integer.parseInt(id);
                 } catch (Exception e) {
-//                    e.printStackTrace();
+                    e.printStackTrace();
                     continue;
                 }
-                try {
-                    if (productDataStore.find(Integer.parseInt(id)) != null) {
-                        if (prodQtt <= 10) {
-                            productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
-                        } else {
-                            productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
-                        }
-                        if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
-                            prodInCart.add(productDataStore.find(Integer.parseInt(id)));
-                        }
+                if (productDataStore.find(Integer.parseInt(id)) != null) {
+                    if (prodQtt <= 10) {
+                        productDataStore.find(Integer.parseInt(id)).setQuantity((int) prodQtt);
+                    } else {
+                        productDataStore.find(Integer.parseInt(id)).setQuantity(maxProdQttForSale);
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    if (!prodInCart.contains(productDataStore.find(Integer.parseInt(id)))) {
+                        prodInCart.add(productDataStore.find(Integer.parseInt(id)));
+                    }
                 }
             }
 
@@ -80,11 +70,7 @@ public class CartController extends HttpServlet {
             context.setVariable("amount", calcCartAmount(prodInCartForAmount));
             engine.process("product/cart.html", context, resp.getWriter());
         }else{
-            try {
-                context.setVariable("products", productDataStore.getAll());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            context.setVariable("products", productDataStore.getAll());
             engine.process("product/index.html", context, resp.getWriter());
         }
     }
@@ -100,18 +86,7 @@ public class CartController extends HttpServlet {
         return prodInCart;
     }
 
-    // sort winners
-//    private List<Product> sortWinners(Object prodInCart){
-//        Collections.sort(prodInCart, new Comparator<Product>() {
-//            @Override
-//            public int compare(Product o1, Product o2) {
-//                return Integer.compare(o2.getId(), o1.getId());
-//            }
-//        });
-//
-//        return product;
-//    }
-    // calculate amount of the cart
+    // calculate amount of the cart throws SQLException
     public double calcCartAmount(List<Product> prodInCartForAmount) {
         List<String> amount = prodInCartForAmount.stream()
                 .map(Product::getPrice)
