@@ -20,3 +20,4 @@ target/
 hs_err_pid*
 src/.~lock.Codecool Shop _ Product Backlog.xlsx#
 src/main/resources/connection.properties#
+src/main/resources

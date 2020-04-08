@@ -18,36 +18,36 @@ public class ProductDaoSql {
 
     public ResultSet getAllProducts() throws SQLException {
         JDBC.openConnection();
-        DataSource dataSource = JDBC.connect();
-        Statement stmt = dataSource.getConnection().createStatement();
+//        DataSource dataSource = JDBC.connect();
+        Statement stmt = JDBC.openConnection().createStatement();
         return stmt.executeQuery(baseSqlString);
     }
 
     public ResultSet getProductsBySupplier(String supplierName) throws SQLException {
-        DataSource dataSource = JDBC.connect();
-        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE s.name = ?");
+//        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = JDBC.openConnection().prepareStatement(baseSqlString +" WHERE s.name = ?");
         statement.setString(1, supplierName);
         return statement.executeQuery();
     }
 
     public ResultSet getProductsByCategory(String categoryName) throws SQLException {
-        DataSource dataSource = JDBC.connect();
-        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE c.name = ?");
+//        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = JDBC.openConnection().prepareStatement(baseSqlString +" WHERE c.name = ?");
         statement.setString(1, categoryName);
         return statement.executeQuery();
     }
 
     public ResultSet getProductsByCategory(String categoryName,String supplierName) throws SQLException {
-        DataSource dataSource = JDBC.connect();
-        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE c.name = ? AND s.name = ?");
+//        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = JDBC.openConnection().prepareStatement(baseSqlString +" WHERE c.name = ? AND s.name = ?");
         statement.setString(1, categoryName);
         statement.setString(2, supplierName);
         return statement.executeQuery();
     }
 
     public ResultSet getProductsById(int productsId) throws SQLException {
-        DataSource dataSource = JDBC.connect();
-        PreparedStatement statement = dataSource.getConnection().prepareStatement(baseSqlString +" WHERE p.id = ?");
+//        DataSource dataSource = JDBC.connect();
+        PreparedStatement statement = JDBC.openConnection().prepareStatement(baseSqlString +" WHERE p.id = ?");
         statement.setInt(1, productsId);
         return statement.executeQuery();
     }

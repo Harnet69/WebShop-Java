@@ -44,23 +44,22 @@ public class JDBC {
             System.out.println("This is from openConnection method");
             io.printStackTrace();
         }
-        System.out.println(connection);
         return connection;
     }
 
 
 
-    public static DataSource connect() throws SQLException {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-
-        dataSource.setDatabaseName("codecoolshop");
-        dataSource.setUser("harnet");
-        dataSource.setPassword("1234");
-
-//        System.out.println("Trying to connect...");
-        dataSource.getConnection().close();
-//        System.out.println("Connection OK");
-
-        return dataSource;
-    }
+//    public static DataSource connect() throws SQLException {
+//        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+//
+//        dataSource.setDatabaseName("codecoolshop");
+//        dataSource.setUser("harnet");
+//        dataSource.setPassword("1234");
+//
+////        System.out.println("Trying to connect...");
+//        dataSource.getConnection().close();
+////        System.out.println("Connection OK");
+//
+//        return dataSource;
+//    }
 }
