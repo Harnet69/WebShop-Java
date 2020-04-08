@@ -1,5 +1,6 @@
 package com.codecool.shop.config;
 
+import com.codecool.shop.connect.JDBC;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
@@ -13,6 +14,14 @@ import com.codecool.shop.model.Supplier;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
+
 
 @WebListener
 public class Initializer implements ServletContextListener {
@@ -22,6 +31,7 @@ public class Initializer implements ServletContextListener {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+
 
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
@@ -43,5 +53,38 @@ public class Initializer implements ServletContextListener {
         productDataStore.add(new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
         productDataStore.add(new Product("iPhone XR", 749, "USD", "The phone has a 6.1-inch 'Liquid Retina' LCD display, which Apple claims is the most advanced LCD in the industry.", phone, apple));
         productDataStore.add(new Product("Apple 10.5' iPad Air", 499, "USD", "Updated from the same one you know and love, features a few improvements to provide you with a better experience", tablet, apple));
+
+        // setting products to db from sql file
+        try {
+            executeUpdateFromFile("src/main/sql/init_db.sql");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void executeUpdateFromFile(String filePath) {
+        String query = "";
+        try {
+            query = new String(Files.readAllBytes(Paths.get(filePath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void executeUpdate(String query) throws SQLException {
+        try (Connection connection = JDBC.openConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.executeUpdate();
+
+        } catch (SQLTimeoutException e) {
+            System.err.println("ERROR: SQL Timeout");
+        }
     }
 }

@@ -40,6 +40,7 @@ INSERT INTO supplier (name, description) VALUES
 INSERT INTO product (name, image, description, default_price, default_currency, product_cat, supplier) VALUES
 ('Amazon Fire', 'product_1', 'Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support', 49, 'USD', 1, 1),
 ('Lenovo IdeaPad Miix 700', 'product_2', 'Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand', 479, 'USD', 1, 1),
-('Amazon Fire HD 8', 'product_3', 'Amazons latest Fire HD 8 tablet is a great value for media consumption', 89, 'USD', 2, 2),
-('iPhone XR', 'product_4', 'Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support', 749, 'USD', 2, 3)
+('Amazon Fire HD 8', 'product_3', 'Amazons latest Fire HD 8 tablet is a great value for media consumption', 89, 'USD', 1, 2),
+('iPhone XR', 'product_4', 'Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support', 749, 'USD', 2, 3),
+('Apple 10.5'' iPad Air', 'product_5', 'Updated from the same one you know and love, features a few improvements to provide you with a better experience', 500, 'USD', 1, 3)
 ;
