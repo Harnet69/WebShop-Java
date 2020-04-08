@@ -23,7 +23,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
-
 @WebListener
 public class Initializer implements ServletContextListener {
 
@@ -48,14 +47,14 @@ public class Initializer implements ServletContextListener {
         productCategoryDataStore.add(tablet);
         productCategoryDataStore.add(phone);
 
-        //setting up products nitializeand printing it
+        //setting up products
         productDataStore.add(new Product("Amazon Fire", 49, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
         productDataStore.add(new Product("Lenovo IdeaPad Miix 700", 479, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo));
         productDataStore.add(new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
         productDataStore.add(new Product("iPhone XR", 749, "USD", "The phone has a 6.1-inch 'Liquid Retina' LCD display, which Apple claims is the most advanced LCD in the industry.", phone, apple));
         productDataStore.add(new Product("Apple 10.5' iPad Air", 499, "USD", "Updated from the same one you know and love, features a few improvements to provide you with a better experience", tablet, apple));
 
-        // setting products to db from sql file
+        // setting products to db from sql file (if you want to reset db to default - move init_db.sql file to sql folder)
         // test to see if a file exists
         File f = new File("src/main/sql/", "init_db.sql");
         if(f.exists()) {
@@ -66,7 +65,7 @@ public class Initializer implements ServletContextListener {
                 e.printStackTrace();
             }
         }else{
-            System.out.println("File not exists");
+            System.out.println("File-backup init_db.sql in resources folder!");
         }
 
     }

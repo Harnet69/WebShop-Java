@@ -116,3 +116,7 @@
 .card-body{
     text-align: center;
 }
+#userName{
+    float: right;
+    margin-top: 30px;
+}

@@ -249,9 +249,67 @@ function sendOrder() {
 
 }
 
+// this is the id of the form
+function login() {
+    $("#login-form").submit(function (e) {
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+
+        var form = $(this);
+        var url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(), // serializes the form's elements.
+            success: function (data)
+            {
+                if(getCookie('email')) {
+                    if(document.getElementById("login-form")){
+                        document.getElementById("login-form").remove();
+                        location.reload();
+                    }
+                    // let userName = document.createElement("label");
+                    //     userName.textContent = "Hello " + getCookie('email');
+                    // document.getElementsByClassName("headerlogo")[0].appendChild(userName);
+                    // alert(data); // show response from the php script.
+                }
+            }
+        });
+    });
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+if(getCookie('email')) {
+    if (document.getElementById("login-form")) {
+        document.getElementById("login-form").remove();
+    }
+    let userName = document.createElement("div");
+    userName.textContent = "Hello " + getCookie('email');
+    userName.setAttribute("id", "userName");
+    document.getElementsByClassName("headerlogo")[0].appendChild(userName);
+}
+
+
 goToCart();
 addListenerToButton();
 cartDelete();
 itemDeleteBtn();
 itemChangeQttOfProd();
 sendOrder();
+login();
