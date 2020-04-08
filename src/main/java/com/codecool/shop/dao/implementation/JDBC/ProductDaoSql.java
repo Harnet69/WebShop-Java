@@ -17,6 +17,7 @@ public class ProductDaoSql {
             "LEFT JOIN supplier s on p.supplier = s.id ";
 
     public ResultSet getAllProducts() throws SQLException {
+        JDBC.openConnection();
         DataSource dataSource = JDBC.connect();
         Statement stmt = dataSource.getConnection().createStatement();
         return stmt.executeQuery(baseSqlString);
