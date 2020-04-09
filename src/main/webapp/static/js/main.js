@@ -291,10 +291,17 @@ function getCookie(cname) {
     return "";
 }
 
-if(getCookie('email')) {
-    if (document.getElementById("login-form")) {
-        document.getElementById("login-form").remove();
+function loginCookie() {
+    if(getCookie('email')) {
+        if (document.getElementById("login-form")) {
+            document.getElementById("login-form").remove();
+        }
+        createUserNameDiv();
     }
+}
+
+
+function createUserNameDiv() {
     let userNameDiv = document.createElement("div");
     let userNameLabel = document.createElement("label");
     let logOut = document.createElement("button");
@@ -316,7 +323,7 @@ function logOut() {
     }
 }
 
-
+loginCookie();
 goToCart();
 addListenerToButton();
 cartDelete();
