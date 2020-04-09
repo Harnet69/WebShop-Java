@@ -269,6 +269,15 @@ function login() {
                         document.getElementById("login-form").remove();
                         location.reload();
                     }
+                }else {
+                    document.getElementById("login-form").style.color = "red";
+                    document.getElementsByTagName("input")[0].style.backgroundColor = "red";
+                    if(!document.getElementById("refuse")) {
+                        let refuseUser = document.createElement("label");
+                        refuseUser.setAttribute("id", "refuse");
+                        refuseUser.textContent = "Wrong email or pass";
+                        document.getElementById("login-form").appendChild(refuseUser);
+                    }
                 }
             }
         });
