@@ -4,6 +4,8 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -16,9 +18,17 @@ import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
+        Logger log = LoggerFactory.getLogger(ProductController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+        //SLF4J
+        log.trace("trace");
+        log.debug("debug");
+        log.info("info");
+        log.warn("warning");
+        log.error("error");
+
         //work with data store
         ProductDao productDataStore = ProductDaoMem.getInstance();
         // work with database
@@ -31,6 +41,7 @@ public class ProductController extends HttpServlet {
             CatController.filterProducts(productJdbc, engine, context, req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Database wasn't found!");
         }
     }
 }

@@ -67,14 +67,13 @@ public class Initializer implements ServletContextListener {
         }else{
             System.out.println("File-backup init_db.sql in resources folder!");
         }
-
     }
 
     public void executeUpdateFromFile(String filePath) {
-        String query = "";
-        try {
-            query = new String(Files.readAllBytes(Paths.get(filePath)));
-        } catch (IOException e) {
+            String query = "";
+            try {
+                query = new String(Files.readAllBytes(Paths.get(filePath)));
+            } catch (IOException e) {
             e.printStackTrace();
         }
 
